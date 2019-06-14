@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EazySDK;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EazySDK_UnitTests
@@ -22,11 +21,12 @@ namespace EazySDK_UnitTests
         }
 
         [TestMethod]
-        public void TestSearchForCustomers()
+        public void TestSearchForCustomersNoParametersThrowsWarningIfEnabled()
         {
+            Settings.GetSection("warnings")["CustomerSearch"] = "true";
             var Get = new Get(Settings);
-            var Req = Get.Customers(PostCode: "GL52 2NF", FirstName: "Test");
-            Assert.IsTrue(Req.Contains("Id"));
+            var Req = Get.Customers();
+            Assert.IsTrue( 1 == 1);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace EazySDK_UnitTests
             foreach (var x in ReqAsJson)
             {
                 JToken dateAdded = x["DateAdded"];
-                if (!dateAdded.ToString().Contains("2019-"))
+                if (!dateAdded.ToString().Contains("/2019"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they were created to soon. The customer was created on {0}", dateAdded.ToString()));
                 }
@@ -116,19 +116,19 @@ namespace EazySDK_UnitTests
         public void TestUsingSearchToAsAParameterReturnsRecordsCreatedBeforeSearchDate()
         {
             var Get = new Get(Settings);
-            var Req = Get.Customers(SearchTo: "2018-12-30");
+            var Req = Get.Customers(SearchTo: "2019-05-10");
             JArray ReqAsJson = JArray.Parse(Req);
 
             foreach (var x in ReqAsJson)
             {
                 JToken dateAdded = x["DateAdded"];
-                if (dateAdded.ToString().Contains("2019-"))
+                if (dateAdded.ToString().Contains("0/2019"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they were created to late. The customer was created on {0}", dateAdded.ToString()));
                 }
             }
 
-            Assert.IsTrue(Req.Contains("2018"));
+            Assert.IsTrue(Req.Contains("2019"));
         }
 
         [TestMethod]
@@ -141,13 +141,13 @@ namespace EazySDK_UnitTests
             foreach (var x in ReqAsJson)
             {
                 JToken dateOfBirth = x["DateOfBirth"];
-                if (!dateOfBirth.ToString().Contains("1990-06-29"))
+                if (!dateOfBirth.ToString().Contains("1996"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they don't have the correct date of birth. The customers date of birth is {0}", dateOfBirth.ToString()));
                 }
             }
 
-            Assert.IsTrue(Req.Contains("1990-06-29"));
+            Assert.IsTrue(Req.Contains("29/06/1996"));
         }
 
         [TestMethod]
@@ -216,7 +216,7 @@ namespace EazySDK_UnitTests
 
             foreach (var x in ReqAsJson)
             {
-                JToken companyName = x["FirstName"];
+                JToken companyName = x["CompanyName"];
                 if (!companyName.ToString().ToLower().Contains("test"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they don't have the correct company name. The customers company name is {0}", companyName.ToString()));
@@ -235,7 +235,7 @@ namespace EazySDK_UnitTests
 
             foreach (var x in ReqAsJson)
             {
-                JToken postCode = x["FirstName"];
+                JToken postCode = x["AddressDetail"]["PostCode"];
                 if (!postCode.ToString().ToLower().Contains("gl52 2nf"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they don't have the correct post code. The customers post code is {0}", postCode.ToString()));
@@ -254,8 +254,8 @@ namespace EazySDK_UnitTests
 
             foreach (var x in ReqAsJson)
             {
-                JToken accountNumber = x["FirstName"];
-                if (!accountNumber.ToString().ToLower().Contains("gl52 2nf"))
+                JToken accountNumber = x["BankDetail"]["AccountNumber"];
+                if (!accountNumber.ToString().ToLower().Contains("45678912"))
                 {
                     Assert.Fail(string.Format("A customer was returned although they don't have the correct account number. The customers account number is {0}", accountNumber.ToString()));
                 }
@@ -263,6 +263,102 @@ namespace EazySDK_UnitTests
 
             Assert.IsTrue(Req.Contains("45678912"));
         }
+
+        [TestMethod]
+        public void TestUsingSortCodeAsAParameterReturnsRecordsContainingSortCode()
+        {
+            var Get = new Get(Settings);
+            var Req = Get.Customers(SortCode: "147852");
+            JArray ReqAsJson = JArray.Parse(Req);
+
+            foreach (var x in ReqAsJson)
+            {
+                JToken sortCode = x["BankDetail"]["BankSortCode"];
+                if (!sortCode.ToString().ToLower().Contains("147852"))
+                {
+                    Assert.Fail(string.Format("A customer was returned although they don't have the correct sort code. The customers sort code is {0}", sortCode.ToString()));
+                }
+            }
+
+            Assert.IsTrue(Req.Contains("147852"));
+        }
+
+        [TestMethod]
+        public void TestUsingAccountHolderNameAsAParameterReturnsRecordsContainingAccountHolderName()
+        {
+            var Get = new Get(Settings);
+            var Req = Get.Customers(AccountHolderName: "Mr Test Client");
+            JArray ReqAsJson = JArray.Parse(Req);
+
+            foreach (var x in ReqAsJson)
+            {
+                JToken accountHolderName = x["BankDetail"]["AccountHolderName"];
+                if (!accountHolderName.ToString().ToLower().Contains("mr test client"))
+                {
+                    Assert.Fail(string.Format("A customer was returned although they don't have the correct account holder name. The customers account holder name is {0}", accountHolderName.ToString()));
+                }
+            }
+
+            Assert.IsTrue(Req.Contains("Mr Test Client"));
+        }
+
+        [TestMethod]
+        public void TestUsingHomePhoneAsAParameterReturnsRecordsContainingHomePhone()
+        {
+            var Get = new Get(Settings);
+            var Req = Get.Customers(HomePhone: "01242147852");
+            JArray ReqAsJson = JArray.Parse(Req);
+
+            foreach (var x in ReqAsJson)
+            {
+                JToken homePhone = x["HomePhoneNumber"];
+                if (!homePhone.ToString().ToLower().Contains("01242147852"))
+                {
+                    Assert.Fail(string.Format("A customer was returned although they don't have the correct home phone. The customers home phone is {0}", homePhone.ToString()));
+                }
+            }
+
+            Assert.IsTrue(Req.Contains("01242147852"));
+        }
+
+        [TestMethod]
+        public void TestUsingMobilePhoneAsAParameterReturnsRecordsContainingMobilePhone()
+        {
+            var Get = new Get(Settings);
+            var Req = Get.Customers(MobilePhone: "07393549789");
+            JArray ReqAsJson = JArray.Parse(Req);
+
+            foreach (var x in ReqAsJson)
+            {
+                JToken mobilePhone = x["MobilePhoneNumber"];
+                if (!mobilePhone.ToString().ToLower().Contains("07393549789"))
+                {
+                    Assert.Fail(string.Format("A customer was returned although they don't have the correct mobile phone. The customers mobile phone is {0}", mobilePhone.ToString()));
+                }
+            }
+
+            Assert.IsTrue(Req.Contains("07393549789"));
+        }
+
+        [TestMethod]
+        public void TestUsingWorkPhoneAsAParameterReturnsRecordsContainingWorkPhone()
+        {
+            var Get = new Get(Settings);
+            var Req = Get.Customers(WorkPhone: "01452365478");
+            JArray ReqAsJson = JArray.Parse(Req);
+
+            foreach (var x in ReqAsJson)
+            {
+                JToken workPhone = x["WorkPhoneNumber"];
+                if (!workPhone.ToString().ToLower().Contains("01452365478"))
+                {
+                    Assert.Fail(string.Format("A customer was returned although they don't have the correct work phone. The customers work phone is {0}", workPhone.ToString()));
+                }
+            }
+
+            Assert.IsTrue(Req.Contains("01452365478"));
+        }
+
     }
 }
 

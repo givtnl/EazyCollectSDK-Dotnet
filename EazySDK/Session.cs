@@ -150,7 +150,6 @@ namespace EazySDK
                 RequestUri = new Uri(RequestUri),
                 Method = HttpEncodedMethod
             };
-
             // Add the Headers to the request
             RequestMessage.Headers.Add("ApiKey", ApiKey);
 

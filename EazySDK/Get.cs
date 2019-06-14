@@ -54,6 +54,9 @@ namespace EazySDK
             }
             else
             {
+                // Pass the return string to the handler. This will throw an exception if it is not what we expect
+                Handler.GenericExceptionCheck(SendRequest);
+
                 // Get the JSON returned from EazyCustomerManager
                 JObject SendRequestAsJson = JObject.Parse(SendRequest);
                 // Get the Message object from JSON
@@ -135,6 +138,9 @@ namespace EazySDK
             }
             else
             {
+                // Pass the return string to the handler. This will throw an exception if it is not what we expect
+                Handler.GenericExceptionCheck(SendRequest);
+
                 // Get the JSON returned from EazyCustomerManager
                 JObject SendRequestAsJson = JObject.Parse(SendRequest);
                 // Get the list of Customers JSON objects
@@ -162,17 +168,19 @@ namespace EazySDK
             var SendRequest = CreateRequest.Get(string.Format("customer/{0}/contract", Customer));
 
             // If no contracts were returned
-            if (SendRequest == "{\"Contracts\":[]}")
+            if (SendRequest.Contains("\"Contracts\":[]"))
             {
                 return string.Format("No contracts could be associated with the customer {0}", Customer);
             }
             else
             {
+                // Pass the return string to the handler. This will throw an exception if it is not what we expect
+                Handler.GenericExceptionCheck(SendRequest);
                 // Get the JSON returned from EazyCustomerManager
                 JObject SendRequestAsJson = JObject.Parse(SendRequest);
                 // Get the list of Contracts JSON objects
                 var Contracts = SendRequestAsJson["Contracts"];
-                return string.Format("{0}", Contracts);
+                return Contracts.ToString();
             }
         }
 
@@ -211,6 +219,8 @@ namespace EazySDK
             }
             else
             {
+                // Pass the return string to the handler. This will throw an exception if it is not what we expect
+                Handler.GenericExceptionCheck(SendRequest);
                 // Get the JSON returned from EazyCustomerManager
                 JObject SendRequestAsJson = JObject.Parse(SendRequest);
                 // Get the list of payment JSON objects
@@ -236,7 +246,10 @@ namespace EazySDK
         public string PaymentsSingle(string Contract, string Payment)
         {
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Get(string.Format("contract/{0}/payment{1}", Contract, Payment));
+            var SendRequest = CreateRequest.Get(string.Format("contract/{0}/payment/{1}", Contract, Payment));
+
+            // Pass the return string to the handler. This will throw an exception if it is not what we expect
+            Handler.GenericExceptionCheck(SendRequest);
 
             return SendRequest;
         }
@@ -257,6 +270,9 @@ namespace EazySDK
         {
             var CreateRequest = Handler.Session(Settings);
             var SendRequest = CreateRequest.Get(string.Format("schedules"));
+
+            // Pass the return string to the handler. This will throw an exception if it is not what we expect
+            Handler.GenericExceptionCheck(SendRequest);
 
             return SendRequest;
         }
