@@ -13,7 +13,7 @@ namespace EazySDK
     public class Session
     {
         #region Client objects
-        // The settings object, derrives from ClientHandler
+        // The settings object, derives from ClientHandler
         private static IConfiguration Settings { get; set; }
 
         #endregion Client objects
@@ -23,7 +23,7 @@ namespace EazySDK
         private static HttpController HttpController { get; set; }
         // This HttpClient will inherit from HttpController
         private static HttpClient HttpClient { get; set; }
-        // The HTTP method must be encoded, and we will use a HttpMethod object ot achieve this
+        // The HTTP method must be encoded, and we will use a HttpMethod object to achieve this
         private static HttpMethod HttpEncodedMethod { get; set; }
         // We will use the ParseQueryString() function from HttpUtility to build our query strings
         private static HttpUtility HttpUtility { get; set; }
@@ -40,15 +40,15 @@ namespace EazySDK
         private static string ApiKey { get; set; }
         // The client code of the client sending requests to EazyCustomerManager
         private static string ClientCode { get; set; }
-        // The base uri of requests sent to EazyCustomerManager. This relies on the the Environment and the Client Code
+        // The base Uri of requests sent to EazyCustomerManager. This relies on the Environment and the Client Code
         private static string BaseUri { get; set; }
         // The target Uri endpoint of requests sent to ECM3
         private static string UriEndpoint { get; set; }
         // The HttpMethod of requests sent to ECM3. This will be passed into HttpEncodedMethod.
         private static string HttpMethod { get; set; }
-        // The full request uri to be sent to EazyCustomerManager
+        // The full request Uri to be sent to EazyCustomerManager
         private static string RequestUri { get; set; }
-        // The response string to be returnd from the request sent to EazyCustomerManager
+        // The response string to be returns from the request sent to EazyCustomerManager
         private static string ResponseAsText { get; set; }
         #endregion String objects
 
@@ -100,7 +100,7 @@ namespace EazySDK
         /// <returns></returns>
         public static string Request(string _method, string _endpoint, Dictionary<string, string> _parameters = null)
         {
-            // The base Uri for all requests sent ot EazyCustomerManager
+            // The base Uri for all requests sent to EazyCustomerManager
             BaseUri = string.Format("https://{0}.eazycollect.co.uk/api/v3/client/{1}/", Environment, ClientCode);
             // The endpoint for the current request to be sent to EazyCustomerManager
             UriEndpoint = _endpoint;
@@ -159,10 +159,10 @@ namespace EazySDK
             // Get a stream of the response for  easier reading
             var ResponseStream = RequestResponse.Content.ReadAsStreamAsync().Result;
 
-            // Raed the Response as a stream
+            // Read the Response as a stream
             Reader = new StreamReader(ResponseStream);
 
-            // Read, then return the entire repsonse
+            // Read, then return the entire response
             string ResponseAsString = Reader.ReadToEnd();
             return ResponseAsString;
         }

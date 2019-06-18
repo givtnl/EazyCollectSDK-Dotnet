@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+
 
 namespace EazySDK
 {
@@ -11,9 +8,15 @@ namespace EazySDK
     {
         public static IConfiguration CreateSettings()
         {
+            if (!File.Exists(Directory.GetCurrentDirectory() + "/appSettings.json"))
+            {
+                SettingsWriter writer = new SettingsWriter();
+            }
+
+
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
                 .Build();
             return configuration;
         }

@@ -13,11 +13,11 @@ namespace EazySDK
         #region Client objects
         // The client object which manages the Session and Settings
         private ClientHandler Handler { get; set; }
-        // The settings object, derrives from ClientHandler
+        // The settings object, derives from ClientHandler
         private IConfiguration Settings { get; set; }
         #endregion Client objects
 
-        #region Dictionary objcects
+        #region Dictionary objects
         // The parameters passed from a function, if there are any
         private Dictionary<string, string> Parameters { get; set; }
         #endregion
@@ -76,19 +76,19 @@ namespace EazySDK
         /// <param name="Email">The full email address of a customer in EazyCustomerManager</param>
         /// <param name="Title">The title of a single customer or a group of customers in EazyCustomerManager</param>
         /// <param name="SearchFrom">Search for customers created in EazyCustomerManager after a given date</param>
-        /// <param name="SearchTo">Search for a cutomer created in EazyCustomerManager before a given date</param>
+        /// <param name="SearchTo">Search for a customer created in EazyCustomerManager before a given date</param>
         /// <param name="DateOfBirth">The full date of birth of a customer or a set of customers in EazyCustomerManager</param>
-        /// <param name="CustomerReference">The full cusotomer reference of a customer in EazyCustomerManager</param>
+        /// <param name="CustomerReference">The full customer reference of a customer in EazyCustomerManager</param>
         /// <param name="FirstName">The full or partial first name of a customer or a set of customer in EazyCustomerManagers</param>
-        /// <param name="Surname">The full or partial suname of a customer or group of customers in EazyCustomerManager</param>
+        /// <param name="Surname">The full or partial surname of a customer or group of customers in EazyCustomerManager</param>
         /// <param name="CompanyName">The full or partial company name of a customer or a set of customers in EazyCustomerManager</param>
         /// <param name="PostCode">The full or partial post code of a customer or a set of customers in EazyCustomerManager</param>
         /// <param name="AccountNumber">The full account number of a customer in EazyCustomerManager</param>
         /// <param name="SortCode">The full sort code of a customer or a group of customers in EazyCustomerManager</param>
         /// <param name="AccountHolderName">The full account holder name of a customer in EazyCustomerManager</param>
-        /// <param name="HomePhone">The full or partial home phone number of a custoemr or group of customers in EazyCustomerManager</param>
-        /// <param name="MobilePhone">The full or partial mobile phone number of a custoemr or group of customers in EazyCustomerManager</param>
-        /// <param name="WorkPhone">The full or partial work phone number of a custoemr or group of customers in EazyCustomerManager</param>
+        /// <param name="HomePhone">The full or partial home phone number of a customer or group of customers in EazyCustomerManager</param>
+        /// <param name="MobilePhone">The full or partial mobile phone number of a customer or group of customers in EazyCustomerManager</param>
+        /// <param name="WorkPhone">The full or partial work phone number of a customer or group of customers in EazyCustomerManager</param>
         /// </optionalParameters>
         /// 
         /// <example>
@@ -101,7 +101,7 @@ namespace EazySDK
         public string Customers(string Email = "", string Title = "", string SearchFrom = "", string SearchTo = "", string DateOfBirth = "", string CustomerReference = "", string FirstName = "", string Surname = "", 
             string CompanyName = "", string PostCode = "", string AccountNumber = "", string SortCode = "", string AccountHolderName = "", string HomePhone = "", string MobilePhone = "", string WorkPhone = "")
         {
-            // Create a new dictionary of paramerters
+            // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>();
 
             // Add method arguments to the parameters only if they are not empty
@@ -203,7 +203,7 @@ namespace EazySDK
         /// </returns>
         public string Payments(string Contract, int NumberOfRows=100)
         {
-            // Create a new dictionary of paramerters
+            // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>
             {
                 { "rows", NumberOfRows.ToString() }
