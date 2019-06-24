@@ -1,22 +1,19 @@
 ﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 
 namespace EazySDK.Utilities
 {
     public class ContractPostChecks
     {
-        private static string path = Directory.GetCurrentDirectory();
-        private static string sandbox_schedules_file = @"\Includes\Sandbox.csv";
-        private static string ecm3_schedules_file = @"\Includes\Ecm3.csv";
-
         /// <summary>
-        /// Read a file containing available schedule names an return an error if the given schedule could not be found
+        /// Read a file containing available schedule names and return an error if the given schedule could not be found
         /// </summary>
         /// 
         /// 
         /// <param name="ScheduleName">A schedule name provided by an external function</param>
+        /// <param name="Settings">Settings configuration used for making a call to EazyCustomerManager</param>
         /// 
         /// <example>
         /// CheckScheduleNameIsAvailable("TestSchedule")
@@ -25,145 +22,326 @@ namespace EazySDK.Utilities
         /// <returns>
         /// bool
         /// </returns>
-        //public bool CheckScheduleNameIsAvailable(string ScheduleName, IConfiguration Settings)
-        //{
-        //    Regex search = new Regex("^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$");
-        //    var result = search.IsMatch(PostCode);
-
-        //    if (!result)
-        //    {
-        //        throw new Exceptions.InvalidParameterException(
-        //            string.Format("{0} is not a valid UK post code. Please double check the post code and re-submit.", PostCode)
-        //            );
-        //    }
-        //    else
-        //    {
-        //        return result;
-        //    }
-        //}
-
-        /// <summary>
-        /// Check an email address is formatted correctly. This will not verify the integrity of an email address, instead it verifies that an email address could exist. 
-        /// The responsibility of verifying an email address lies with the client.
-        /// </summary>
-        /// 
-        /// <param name="EmailAddress">An email address provided by an external function</param>
-        ///
-        /// <example>
-        /// CheckEmailAddressIsCorrectlyFormatted("test@email.com")
-        /// </example>
-        /// 
-        /// <returns>
-        /// bool
-        /// </returns>
-        public bool CheckEmailAddressIsCorrectlyFormatted(string EmailAddress)
+        public bool CheckScheduleNameIsAvailable(string ScheduleName, IConfiguration Settings)
         {
-            Regex search = new Regex("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)");
-            var result = search.IsMatch(EmailAddress);
+            SchedulesReader reader = new SchedulesReader();
+            JObject RootJson = reader.ReadSchedulesFile(Settings);
+            JObject SchedulesJson = RootJson["Schedules"].ToObject<JObject>();
+            List<string> ScheduleNamesList = new List<string>();
 
-            if (!result)
+            foreach (JProperty property in SchedulesJson.Properties())
             {
-                throw new Exceptions.InvalidParameterException(
-                    string.Format("{0} is not a valid email address. Please double check the email address and re-submit.", EmailAddress)
-                    );
+                ScheduleNamesList.Add(property.Name.ToLower());
+            }
+
+            if (ScheduleNamesList.Contains(ScheduleName))
+            {
+                return true;
             }
             else
             {
-                return result;
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid schedule name. The available schedule names are: {1}", ScheduleName, string.Join(", ", ScheduleNamesList)));
             }
         }
 
         /// <summary>
-        /// Check a bank account number is formatted correctly. This will not verify the integrity of a bank account number, and does not perform any mathematical checks on the account number. 
-        /// The responsibility of verifying a bank account number lies with the client. We can offer a bank checking API to check the validity of bank details. For more information, contact our sales team on 01242 650052.
+        /// Check that the TerminationType provided is valid, and return an integer to be used by other functions
         /// </summary>
         /// 
-        /// <param name="AccountNumber">A bank account number provided by an external function</param>
-        ///
-        /// <example>
-        /// CheckAccountNumberIsFormattedCorrectly("12345678")
-        /// </example>
+        /// <param name="TerminationType"> A TerminationType provided by an external function</param>
         /// 
         /// <returns>
-        /// bool
+        /// int(0-2)
         /// </returns>
-        public bool CheckAccountNumberIsFormattedCorrectly(string AccountNumber)
+        public int CheckTerminationTypeIsValid(string TerminationType)
         {
-            Regex search = new Regex("^[0-9]{8}$");
-            var result = search.IsMatch(AccountNumber);
-
-            if (!result)
+            Dictionary<string, int> ValidTerminationTypes = new Dictionary<string, int>
             {
-                throw new Exceptions.InvalidParameterException(
-                    string.Format("{0} is not a valid UK bank account number. Please double check that the account number is 8 characters long and only contains digits.", AccountNumber)
-                    );
+                { "take certain number of debits", 0 },
+                { "until further notice", 1 },
+                { "end on exact date", 2 }
+            };
+
+            if (!ValidTerminationTypes.ContainsKey(TerminationType.ToLower()))
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid TerminationType. The available TerminationTypes are: {1}", TerminationType, string.Join(", ", ValidTerminationTypes.Keys)));
             }
             else
             {
-                return result;
+                return ValidTerminationTypes[TerminationType.ToLower()];
             }
         }
 
         /// <summary>
-        /// Check a bank sort code is formatted correctly. This will not verify the integrity of a bank sort code, and does not perform any mathematical checks on the sort code. 
-        /// The responsibility of verifying a bank sort code lies with the client. We can offer a bank checking API to check the validity of bank details. For more information, contact our sales team on 01242 650052.
+        /// Check that the AtTheEnd provided is valid, and return an integer to be used by other functions
         /// </summary>
         /// 
-        /// <param name="SortCode">A bank account number provided by an external function</param>
-        ///
-        /// <example>
-        /// CheckAccountNumberIsFormattedCorrectly("123456")
-        /// </example>
+        /// <param name="AtTheEnd"> A TerminationType provided by an external function</param>
         /// 
         /// <returns>
-        /// bool
+        /// int(0-1)
         /// </returns>
-        public bool CheckSortCodeIsFormattedCorrectly(string SortCode)
+        public int CheckAtTheEndIsValid(string AtThEnd)
         {
-            Regex search = new Regex("^[0-9]{6}$");
-            var result = search.IsMatch(SortCode);
-
-            if (!result)
+            Dictionary<string, int> ValidAtTheEnds = new Dictionary<string, int>
             {
-                throw new Exceptions.InvalidParameterException(
-                    string.Format("{0} is not a valid UK bank sort code. Please double check that the sort code is 6 characters long and only contains digits.", SortCode)
-                    );
+                { "expire", 0 },
+                { "switch to further notice", 1 },
+            };
+
+            if (!ValidAtTheEnds.ContainsKey(AtThEnd.ToLower()))
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid AtTheEnd. The available AtTheEnds are: {1}", AtThEnd, string.Join(", ", ValidAtTheEnds.Keys)));
             }
             else
             {
-                return result;
+                return ValidAtTheEnds[AtThEnd.ToLower()];
             }
         }
 
         /// <summary>
-        /// Check an account holder name is formatted correctly. This will not verify the account holder name of a UK bank account, instead it performs several checks to ensure the account holder name could be correct. 
-        /// The responsibility of verifying a bank account holder name lies with the client. 
+        /// Check that the PaymentDayInWeek provided is valid, and return a bool if it is.
         /// </summary>
         /// 
-        /// <param name="AccountHolderName">A bank account number provided by an external function</param>
-        ///
-        /// <example>
-        /// AccountHolderName("Mr John Doe")
-        /// </example>
+        /// <param name="PaymentDayInWeek"> A PaymentDayInWeek provided by an external function</param>
         /// 
         /// <returns>
         /// bool
         /// </returns>
-        public bool CheckAccountHolderNameIsFormattedCorrectly(string AccountHolderName)
+        public bool CheckPaymentDayInWeekIsValid(string PaymentDayInWeek)
         {
-            Regex search = new Regex("^[A-Z0-9\\-\\/& ]{3,18}$");
-            var result = search.IsMatch(AccountHolderName.ToUpper());
-
-            if (!result)
+            List<string> ValidPaymentDayInWeeks = new List<string>
             {
-                throw new Exceptions.InvalidParameterException(
-                    string.Format("{0} is not formatted as a UK bank account holder name. A UK bank account holder name must be between 3 and 18 characters, contain only alphabetic characters(a-z), ampersands (&)," +
-                    "hyphens (-), forward slashes (/) and spaces ( ). Please double check that the bank account holder name meets these criteria and re-submit.", AccountHolderName)
-                    );
+                { "1" },
+                { "2" },
+                { "3" },
+                { "4" },
+                { "5" }
+            };
+
+            if (!ValidPaymentDayInWeeks.Contains(PaymentDayInWeek.ToLower()))
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInWeek. The available PaymentDayInWeeks are: Monday, Tuesday, Wednesday, Thursday and Friday.", PaymentDayInWeek));
             }
             else
             {
-                return result;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Check that the PaymentDayInMonth provided is valid, and return a bool if it is.
+        /// </summary>
+        /// 
+        /// <param name="PaymentDayInMonth"> A PaymentDayInMonth provided by an external function</param>
+        /// 
+        /// <returns>
+        /// bool
+        /// </returns>
+        public bool CheckPaymentDayInMonthIsValid(string PaymentDayInMonth)
+        {
+            try
+            {
+                if (int.Parse(PaymentDayInMonth) >= 1 && int.Parse(PaymentDayInMonth) <= 28 || PaymentDayInMonth.ToLower() == "last day of month")
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInMonth. The PaymentDayInMonth must be between 1 and 28 or be set to 'last day of month'", PaymentDayInMonth));
+                }
+            }
+            catch
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInMonth. The PaymentDayInMonth must be between 1 and 28 or be set to 'last day of month'", PaymentDayInMonth));
+            }
+        }
+
+        /// <summary>
+        /// Check that the PaymentMonthInYear provided is valid, and return a bool if it is.
+        /// </summary>
+        /// 
+        /// <param name="PaymentMonthInYear"> A PaymentMonthInYear provided by an external function</param>
+        /// 
+        /// <returns>
+        /// bool
+        /// </returns>
+        public bool CheckPaymentMonthInYearIsValid(string PaymentMonthInYear)
+        {
+            try
+            {
+                if (int.Parse(PaymentMonthInYear) >= 1 && int.Parse(PaymentMonthInYear) <= 12)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentMonthInYear. The PaymentMonthInYear must be between 1 and 12.", PaymentMonthInYear));
+                }
+            }
+            catch
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentMonthInYear. The PaymentMonthInYear must be between 1 and 12.", PaymentMonthInYear));
+            }
+        }
+
+        /// <summary>
+        /// Check that the NumberOfDebits provided is valid, and return a bool if it is.
+        /// </summary>
+        /// 
+        /// <param name="NumberOfDebits"> A NumberOfDebits provided by an external function</param>
+        /// 
+        /// <returns>
+        /// bool
+        /// </returns>
+        public bool CheckNumberOfDebitsIsValid(string NumberOfDebits)
+        {
+            try
+            {
+                if (int.Parse(NumberOfDebits) >= 1 && int.Parse(NumberOfDebits) <= 99)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid NumberOfDebits. The NumberOfDebits must be between 1 and 99.", NumberOfDebits));
+                }
+            }
+            catch
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid NumberOfDebits. The NumberOfDebits must be between 1 and 99.", NumberOfDebits));
+            }
+        }
+
+
+        /// <summary>
+        /// Check that the TerminationDate provided is valid, and is later than the StartDate.
+        /// </summary>
+        /// 
+        /// <param name="TerminationDate"> A TerminationDate provided by an external function</param>
+        /// <param name="StartDate"> A StartDate provided by an external function</param>
+        /// 
+        /// <returns>
+        /// bool
+        /// </returns>
+        public bool CheckTerminationDateIsAfterStartDate(string TerminationDate, string StartDate)
+        {
+            DateTime TermDate = new DateTime();
+            DateTime SDate = new DateTime();
+            try
+            {
+                TermDate = DateTime.Parse(TerminationDate);
+                SDate = DateTime.Parse(StartDate);
+            }
+            catch (Exception e)
+            {
+                throw new Exceptions.InvalidParameterException("Either the termination date or the start date are not valid ISO dates.", e);
+            }
+
+            if (TermDate < SDate)
+            {
+                throw new Exceptions.InvalidParameterException(string.Format("The Termination date of {0} is too early. It must be after the date {1}", TerminationDate, StartDate));
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Check whether or not the schedule is Ad-Hoc, and return true if it is.
+        /// </summary>
+        /// 
+        /// <param name="ScheduleName"> A ScheduleName provided by an external function</param>
+        /// <param name="Settings">An IConfiguration provided by an external function</param>
+        /// 
+        /// <returns>
+        /// bool
+        /// </returns>
+        public bool CheckScheduleAdHocStatus(string ScheduleName, IConfiguration Settings)
+        {
+            SchedulesReader reader = new SchedulesReader();
+            JObject RootJson = reader.ReadSchedulesFile(Settings);
+            JObject SchedulesJson = RootJson["Schedules"].ToObject<JObject>();
+
+            JToken Schedule = SchedulesJson.GetValue(ScheduleName, StringComparison.CurrentCultureIgnoreCase);
+
+            if (bool.Parse(Schedule["ScheduleAdHoc"].ToString()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check that the StartDate provided is valid, and return a string.
+        /// </summary>
+        /// 
+        /// <param name="StartDate"> A start date provided by an external function</param>
+        /// 
+        /// <returns>
+        /// string
+        /// </returns>
+        public string CheckStartDateIsValid(string StartDate, IConfiguration Settings)
+        {
+            DateTime InitialDate = DateTime.Parse(StartDate);
+            int InitialProcessingDays = int.Parse(Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"]);
+            CheckWorkingDays WorkingDays = new CheckWorkingDays();
+
+            DateTime FirstAvailableDate = WorkingDays.CheckWorkingDaysInFuture(InitialProcessingDays);
+            bool AutoFixStartDate = bool.Parse(Settings.GetSection("contracts")["AutoFixStartDate"]);
+
+            if (InitialDate < FirstAvailableDate)
+            {
+                if (AutoFixStartDate)
+                {
+                    return FirstAvailableDate.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    throw new Exceptions.InvalidStartDateException(string.Format("The start date of {0} is too soon. The earliest possible start date for this contract is {1}", StartDate, FirstAvailableDate.ToString("yyyy-MM-dd")));
+                }
+            }
+            else
+            {
+                return StartDate;
+            }
+        }
+
+        /// <summary>
+        /// Check that the Frequency provided is valid, and return a string.
+        /// </summary>
+        /// 
+        /// <param name="ScheduleName"> A schedule name provided by an external function</param>
+        /// 
+        /// <returns>
+        /// int (-1,2)
+        /// </returns>
+        public int CheckFrequency(string ScheduleName, IConfiguration Settings)
+        {
+            SchedulesReader Reader = new SchedulesReader();
+            JObject SchedulesList = Reader.ReadSchedulesFile(Settings);
+            JToken ScheduleToken = SchedulesList.SelectToken("Schedules." + ScheduleName);
+            string Frequency = ScheduleToken.Value<string>("ScheduleFrequency");
+
+            if (Frequency == "Weekly")
+            {
+                return 0;
+            }
+            else if (Frequency == "Monthly")
+            {
+                return 1;
+            }
+            else if (Frequency == "Annually")
+            {
+                return 2;
+            }
+            else
+            {
+                return -1;
             }
         }
     }

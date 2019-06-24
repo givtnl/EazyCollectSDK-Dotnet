@@ -269,7 +269,7 @@ namespace EazySDK
         public string Schedules()
         {
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Get(string.Format("schedules"));
+            var SendRequest = CreateRequest.Get("schedules");
 
             // Pass the return string to the handler. This will throw an exception if it is not what we expect
             Handler.GenericExceptionCheck(SendRequest);

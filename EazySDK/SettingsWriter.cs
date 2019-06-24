@@ -128,9 +128,6 @@ namespace EazySDK
             _other.Add(new JProperty(nameof(Models.Other.BankHolidayUpdateDays), other[0].BankHolidayUpdateDays.ToString()));
             _other.Add(new JProperty(nameof(Models.Other.ForceUpdateSchedulesOnRun), other[0].ForceUpdateSchedulesOnRun.ToString()));
 
-
-
-
             RootObject.Add("currentEnvironment", _currentEnvironment);
             RootObject.Add("sandboxClientDetails", _sandboxClientDetails);
             RootObject.Add("ecm3ClientDetails", _ecm3ClientDetails);

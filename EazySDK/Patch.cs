@@ -6,9 +6,9 @@ using Newtonsoft.Json.Linq;
 namespace EazySDK
 {
     /// <summary>
-    /// A collection of POST requests made to the EazyCustomerManager API
+    /// A collection of PATCH requests made to the EazyCustomerManager API
     /// </summary>
-    public class Post
+    public class Patch
     {
         // The client object which manages the Session and Settings
         private ClientHandler Handler { get; set; }
@@ -21,7 +21,7 @@ namespace EazySDK
         private Dictionary<string, string> Parameters { get; set; }
 
 
-        public Post(IConfiguration _Settings)
+        public Patch(IConfiguration _Settings)
         {
             // Get the Settings passed from the Client Handler
             Settings = _Settings;
@@ -30,21 +30,36 @@ namespace EazySDK
         }
 
         /// <summary>
-        /// Create a new callback URL for EazyCustomerManager
+        /// Modify a customer in EazyCustomerManager
         /// </summary>
         /// 
-        /// <remarks>
-        /// NOTE: We strongly recommend using a HTTPS secured URL as the return endpoint.
-        /// </remarks>
+        /// <param name="Customer"></param>
         /// 
-        /// <example>
-        /// CallbackUrl("https://test.com");
-        /// </example>
+        /// <OptionalParams>
+        /// <param name="Email">The new email address of the customer. This must be unique</param>
+        /// <param name="Title">The new title of the customer</param>
+        /// <param name="DateOfBirth">The new date of birth of the customer in YYYY-MM-DD format</param>
+        /// <param name="FirstName">The new first name of the customer</param>
+        /// <param name="Surname">The new surname of the customer</param>
+        /// <param name="CompanyName">The new company name of the customer</param>
+        /// <param name="Line1">The new firs</param>
+        /// <param name="Line2"></param>
+        /// <param name="Line3"></param>
+        /// <param name="Line4"></param>
+        /// <param name="PostCode"></param>
+        /// <param name="AccountNumber"></param>
+        /// <param name="SortCode"></param>
+        /// <param name="AccountHolderName"></param>
+        /// <param name="HomePhone"></param>
+        /// <param name="MobilePhone"></param>
+        /// <param name="WorkPhone"></param>
+        /// <param name="Initials"></param>
+        /// </OptionalParams>
         /// 
-        /// <returns>
-        /// "The new callback URL is https://test.com" 
-        /// </returns>
-        public string CallbackUrl(string _CallbackUrl)
+        /// <returns></returns>
+        public string Customer(string Customer, string Email = "", string Title = "", string DateOfBirth = "", string FirstName = "", string Surname = "", string CompanyName = "", string Line1 = "",
+            string Line2 = "", string Line3 = "", string Line4 = "", string PostCode = "", string AccountNumber = "", string SortCode = "", string AccountHolderName = "", string HomePhone = "",
+            string MobilePhone = "", string WorkPhone = "", string Initials = "")
         {
             // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>
@@ -553,7 +568,7 @@ namespace EazySDK
         /// <returns>
         /// Confirmation string
         /// </returns>
-        public string RestartContract(string Contract, string TerminationType, string AtTheEnd, string PaymentAmount = "", string InitialAmount = "", string FinalAmount = "", 
+        public string RestartContract(string Contract, string TerminationType, string AtTheEnd, string PaymentAmount = "", string InitialAmount = "", string FinalAmount = "",
             string PaymentDayInMonth = "", string PaymentMonthInYear = "", string AditionalReference = "")
         {
             if (Contract == "" || TerminationType == "" || AtTheEnd == "")
@@ -626,7 +641,7 @@ namespace EazySDK
             bool _PaymentAmountNotNegative = PaymentChecks.CheckPaymentAmount(PaymentAmount);
             string TrueCollectionDate = PaymentChecks.CheckPaymentDate(CollectionDate, Settings);
             bool IsCreditAllowed = PaymentChecks.CheckIfCreditIsAllowed(Settings);
-            
+
 
             // Add method arguments to the parameters only if they are not empty
             try

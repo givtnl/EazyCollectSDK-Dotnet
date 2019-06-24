@@ -101,7 +101,7 @@ namespace EazySDK
         public static string Request(string _method, string _endpoint, Dictionary<string, string> _parameters = null)
         {
             // The base Uri for all requests sent to EazyCustomerManager
-            BaseUri = string.Format("https://{0}.eazycollect.co.uk/api/v3/client/{1}/", Environment, ClientCode);
+            BaseUri = string.Format(@"https://{0}.eazycollect.co.uk/api/v3/client/{1}/", Environment, ClientCode);
             // The endpoint for the current request to be sent to EazyCustomerManager
             UriEndpoint = _endpoint;
             // The base Uri for the current request
@@ -180,7 +180,6 @@ namespace EazySDK
         /// </summary>
         public string Post(string _Endpoint, Dictionary<string, string> _Parameters = null)
         {
-
             return Request("POST", _Endpoint, _parameters: _Parameters);
         }
 
