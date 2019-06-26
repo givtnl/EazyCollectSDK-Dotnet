@@ -2,7 +2,7 @@
 # Table of contents
 
 
-- [Configuration](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/master/docs/README.md#configuration)
+- [Configuration](https://github.com/EazyCollectServices/EazyCollectSDK-DotNet/blob/master/docs/README.md#configuration)
   -  [Available settings](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/master/docs/README.md#available-settings)
       - [current_environment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/master/docs/README.md#current_environment)
       - [sandbox_client_details](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/master/docs/README.md#sandbox_client_details)
