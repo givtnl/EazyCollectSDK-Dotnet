@@ -17,6 +17,11 @@ namespace EazySDK.Utilities
 
         public DateTime CheckWorkingDaysInFuture(int NumberOfDays)
         {
+            if (NumberOfDays <= 0)
+            {
+                throw new Exceptions.InvalidSettingsConfigurationException("The number of days in the future must be above 0.");
+            }
+
             Reader = new WorkingDaysReader();
             BankHolidaysList = Reader.ReadWorkingDaysFile();
 

@@ -193,7 +193,7 @@ namespace EazySDK
         /// <param name="PaymentDayInMonth">Mandatory for annual and monthly contracts. The collection day of the month (1-28 || Last day of month)</param>
         /// <param name="PaymentDayInWeek">Mandatory for weekly contracts. The collection day of the week for weekly schedules (Monday .. Friday)</param>
         /// <param name="TerminationDate">Mandatory if termination type is set to "End on exact date". The termination date of a contract</param>
-        /// <param name="AdditionalReference">An additional, searchable reference for the newly created contract</param>
+        /// <param name="AdditionalReference">An additional, search-able reference for the newly created contract</param>
         /// <param name="CustomDDReference">A custom DD reference for the new contract. This option is only available upon request to Eazy Collect </param>
         /// </OptionalParams>
         /// 
@@ -414,8 +414,8 @@ namespace EazySDK
             // Get the JSON returned from EazyCustomerManager
             JObject SendRequestAsJson = JObject.Parse(SendRequest);
             // Get the list of Contracts JSON objects
-            JToken Contracts = SendRequestAsJson["Contracts"];
-            return Contracts.ToString();
+            JToken NewContract = SendRequestAsJson;
+            return NewContract.ToString();
         }
 
         /// <summary>
@@ -459,9 +459,9 @@ namespace EazySDK
         /// </summary>
         /// 
         /// <remarks>
-        /// NOTE: Archiving a contract achieves different results to cancelling a Direct Debit.First and most importantly, the process is irreversible.Once a contract is archived, it can not
-        /// be unarchived.The process flow works like so; The Direct Debit is cancelled, any arrears that are outstanding are written off, any future scheduled payments are cancelled and finally, 
-        /// the contract status is set to archived.Like cancelling a Direct Debit, any ad_hoc payments must be manually cancelled.
+        /// NOTE: Archiving a contract achieves different results to canceling a Direct Debit.First and most importantly, the process is irreversible.Once a contract is archived, it can not
+        /// be unarchived.The process flow works like so; The Direct Debit is canceled, any arrears that are outstanding are written off, any future scheduled payments are canceled and finally, 
+        /// the contract status is set to archived.Like canceling a Direct Debit, any ad_hoc payments must be manually canceled.
         /// </remarks>
         /// 
         /// <param name="Contract">The GUID of the contract owning the Direct Debit to be canceled</param>
@@ -483,7 +483,7 @@ namespace EazySDK
 
             if (SendRequest.Contains("Contract is already archived"))
             {
-                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} is already archived.", Contract));
+                throw new Exceptions.RecordAlreadyExistsException(string.Format("The contract {0} is already archived.", Contract));
             }
             else
             {
@@ -496,7 +496,7 @@ namespace EazySDK
         /// </summary>
         /// 
         /// <remarks>
-        /// NOTE: Reactivating a contract changes the status of a contract from ‘Cancelled’ to ‘Pending to activate’. This will sent a new instruction to the bank, generating an 0N charge.
+        /// NOTE: Reactivating a contract changes the status of a contract from ‘Canceled’ to ‘Pending to activate’. This will sent a new instruction to the bank, generating an 0N charge.
         /// </remarks>
         /// 
         ///
@@ -525,7 +525,7 @@ namespace EazySDK
         /// </summary>
         /// 
         /// <remarks>
-        /// NOTE: Restarting a contract is fundamentally different to reactivating a contract as it can only be performed if the ollowing criteria have been met
+        /// NOTE: Restarting a contract is fundamentally different to reactivating a contract as it can only be performed if the following criteria have been met
         ///
         /// - The original contract was a fixed term which has expired
         /// - The payment schedule has met its end naturally, and the contract status has become 'Expired'
@@ -543,7 +543,7 @@ namespace EazySDK
         /// <param name="FinalAmount">Used if the final collection amount is different from the rest.Not to be used on ad-hoc contracts.</param>
         /// <param name="PaymentDayInMonth">The collection day for monthly contracts.Accepts 1-28 or 'last day of month'</param>
         /// <param name="PaymentMonthInYear">The collection month for annual contracts. Accepts 1-12</param>
-        /// <param name="AdditionalReference">An additional reference for the newlycreated contract</param>
+        /// <param name="AdditionalReference">An additional reference for the newly created contract</param>
         /// 
         /// </OptionalParams>
         /// <example>

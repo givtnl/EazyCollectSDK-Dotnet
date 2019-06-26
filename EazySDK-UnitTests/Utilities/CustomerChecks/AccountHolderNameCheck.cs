@@ -59,14 +59,6 @@ namespace EazySDK_UnitTests
 
         [TestMethod]
         [ExpectedException(typeof(EazySDK.Exceptions.InvalidParameterException))]
-        public void TestDoesNotAcceptNumberrsAccountHolderName()
-        {
-            var result = Check.CheckAccountHolderNameIsFormattedCorrectly("Account 123");
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(EazySDK.Exceptions.InvalidParameterException))]
         public void TestDoesNotAcceptSpecialCharactersAccountHolderName()
         {
             var result = Check.CheckAccountHolderNameIsFormattedCorrectly("Account!;@");

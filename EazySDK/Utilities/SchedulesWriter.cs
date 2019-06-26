@@ -75,11 +75,11 @@ namespace EazySDK.Utilities
             RootObject.Add("LastUpdated", DateTime.Today.Date.ToString("yyyy-MM-dd"));
             Environment = Settings.GetSection("currentEnvironment")["Environment"].ToLower();
 
-            if(!Directory.Exists(Directory.GetCurrentDirectory() + @"..\..\Includes"))
+            if(!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes"))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"..\..\Includes");
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Includes");
             }
-            File.WriteAllText(Directory.GetCurrentDirectory() + @"..\..\Includes\" + Environment +"scheduleslist.json", RootObject.ToString());
+            File.WriteAllText(Directory.GetCurrentDirectory() + @"\Includes\" + Environment + "scheduleslist.json", RootObject.ToString());
             return RootObject;
         }
     }

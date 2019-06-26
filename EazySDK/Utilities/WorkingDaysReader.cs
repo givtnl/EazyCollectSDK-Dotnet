@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +28,7 @@ namespace EazySDK.Utilities
             Settings = Handler.Settings();
             UpdateDays = int.Parse(Settings.GetSection("other")["BankHolidayUpdateDays"]);
 
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"..\..\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"..\..\Includes\bankholidays.json")))
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json")))
             {
                 WorkingDaysWriter writer = new WorkingDaysWriter();
                 WorkingDaysList = writer.WorkingDayWriter();
@@ -38,7 +37,7 @@ namespace EazySDK.Utilities
             else
             {
                 WorkingDaysList = new List<string>();
-                FileLines = File.ReadLines(Directory.GetCurrentDirectory() + @"..\..\Includes\bankholidays.json");
+                FileLines = File.ReadLines(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json");
 
                 LastUpdateDate = DateTime.Parse(FileLines.First());
 

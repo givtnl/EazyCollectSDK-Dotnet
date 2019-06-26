@@ -13,6 +13,7 @@ namespace EazySDK.Utilities
         private static DateTime date { get; set; }
         private static JObject SchedulesJson { get; set; }
         private static JToken SchedulesList { get; set; }
+        private static SchedulesWriter Writer { get; set; }
 
         /// <summary>
         /// Read the given schedules file and return a JSON object with the schedules data. If the file needs updating, send the JObject to the schedule writer.
@@ -23,23 +24,23 @@ namespace EazySDK.Utilities
         {
             Environment = Settings.GetSection("currentEnvironment")["Environment"].ToLower();
 
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"..\..\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"..\..\Includes\" + Environment + "scheduleslist.json")))
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"\Includes\" + Environment + "scheduleslist.json")))
             {
-                SchedulesWriter writer = new SchedulesWriter();
-                SchedulesJson = writer.ScheduleWriter(Settings);
+                Writer = new SchedulesWriter();
+                SchedulesJson = Writer.ScheduleWriter(Settings);
                 return SchedulesJson;
             }
             else
             {
                 try
                 {
-                    SchedulesJson = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + @"..\..\Includes\" + Environment + "scheduleslist.json"));
+                    SchedulesJson = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + @"\Includes\" + Environment + "scheduleslist.json"));
                     return SchedulesJson;
                 }
                 catch
                 {
-                    SchedulesWriter writer = new SchedulesWriter();
-                    SchedulesJson = writer.ScheduleWriter(Settings);
+                    Writer = new SchedulesWriter();
+                    SchedulesJson = Writer.ScheduleWriter(Settings);
                     return SchedulesJson;
                 }
             }

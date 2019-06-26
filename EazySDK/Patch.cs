@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 
 namespace EazySDK
 {
@@ -33,124 +32,73 @@ namespace EazySDK
         /// Modify a customer in EazyCustomerManager
         /// </summary>
         /// 
-        /// <param name="Customer"></param>
+        /// <param name="Customer">The GUID of an existing customer in EazyCustomerManager</param>
         /// 
         /// <OptionalParams>
-        /// <param name="Email">The new email address of the customer. This must be unique</param>
-        /// <param name="Title">The new title of the customer</param>
-        /// <param name="DateOfBirth">The new date of birth of the customer in YYYY-MM-DD format</param>
-        /// <param name="FirstName">The new first name of the customer</param>
-        /// <param name="Surname">The new surname of the customer</param>
-        /// <param name="CompanyName">The new company name of the customer</param>
-        /// <param name="Line1">The new firs</param>
-        /// <param name="Line2"></param>
-        /// <param name="Line3"></param>
-        /// <param name="Line4"></param>
-        /// <param name="PostCode"></param>
-        /// <param name="AccountNumber"></param>
-        /// <param name="SortCode"></param>
-        /// <param name="AccountHolderName"></param>
-        /// <param name="HomePhone"></param>
-        /// <param name="MobilePhone"></param>
-        /// <param name="WorkPhone"></param>
-        /// <param name="Initials"></param>
+        /// <param name="Email">The new email address of the existing customer. This must be unique</param>
+        /// <param name="Title">The new title of the existing customer</param>
+        /// <param name="DateOfBirth">The new date of birth of the existing customer in YYYY-MM-DD format</param>
+        /// <param name="FirstName">The new first name of the existing customer</param>
+        /// <param name="Surname">The new surname of the existing customer</param>
+        /// <param name="CompanyName">The new company name of the existing customer</param>
+        /// <param name="Line1">The new first line of the existing customers address</param>
+        /// <param name="Line2">The new second line of the existing customers address</param>
+        /// <param name="Line3">The new third line of the existing customers address</param>
+        /// <param name="Line4">The new fourth line of the existing customers address</param>
+        /// <param name="PostCode">The new post code of the existing customers address</param>
+        /// <param name="AccountNumber">The new account number of the existing customer</param>
+        /// <param name="SortCode">The new sort code of the existing customer</param>
+        /// <param name="AccountHolderName">The new name on the account of the existing customer</param>
+        /// <param name="HomePhone">The new home phone number of the existing customer</param>
+        /// <param name="MobilePhone">The new mobile phone number of the existing customer</param>
+        /// <param name="WorkPhone">The new work phone number of the existing customer</param>
+        /// <param name="Initials">The new initials of the existing customer</param>
         /// </OptionalParams>
         /// 
-        /// <returns></returns>
+        /// <example>
+        /// Customer("ab09362d-f88e-4ee8-be85-e27e1a6ce06a", Surname: "New surname");
+        /// </example>
+        /// 
+        /// <returns>
+        /// Confirmation string
+        /// </returns>
         public string Customer(string Customer, string Email = "", string Title = "", string DateOfBirth = "", string FirstName = "", string Surname = "", string CompanyName = "", string Line1 = "",
             string Line2 = "", string Line3 = "", string Line4 = "", string PostCode = "", string AccountNumber = "", string SortCode = "", string AccountHolderName = "", string HomePhone = "",
             string MobilePhone = "", string WorkPhone = "", string Initials = "")
         {
             // Create a new dictionary of parameters
-            Parameters = new Dictionary<string, string>
-            {
-                { "url", _CallbackUrl }
-            };
-
-            var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post("BACS/callback", _Parameters: Parameters);
-
-            // Pass the return string to the handler. This will throw an exception if it is not what we expect
-            Handler.GenericExceptionCheck(SendRequest);
-
-            return string.Format("The new callback URL is {0}", _CallbackUrl);
-        }
-
-        /// <summary>
-        /// Create a new customer in EazyCustomerManager
-        /// </summary>
-        /// 
-        /// <param name="Email">The email address of the new customer. This must be unique</param>
-        /// <param name="Title">The title of the new customer</param>
-        /// <param name="CustomerReference">The customer reference of the new customer. This must be unique.</param>
-        /// <param name="FirstName">The first name of the new customer</param>
-        /// <param name="Surname">The surname of the new customer</param>
-        /// <param name="Line1">The first line of the new customers address</param>
-        /// <param name="PostCode">The post code of the new customer</param>
-        /// <param name="AccountNumber">The bank account number of the new customer</param>
-        /// <param name="SortCode">The sort code of the new customer</param>
-        /// <param name="AccountHolderName">The new customers full name as it appears on their bank account</param>
-        /// 
-        /// <optionalParams>
-        /// <param name="Line2">The second line of the new customers address</param>
-        /// <param name="Line3">The third line of the new customers address</param>
-        /// <param name="Line4">The fourth line of the new customers address</param>
-        /// <param name="CompanyName">The name of the company the new customer represents</param>
-        /// <param name="DateOfBirth">The date of birth of the new customer, formatted to ISO standards(YYYY-MM-DD)</param>
-        /// <param name="Initials">The initials of the new customer</param>
-        /// <param name="HomePhone">The home phone number of the new customer</param>
-        /// <param name="MobilePhone">The mobile phone number of the new customer</param>
-        /// <param name="WorkPhone">The work phone number of the new customer</param>
-        /// </optionalParams>
-        /// 
-        /// <example>
-        /// Customer("test@email.com", "Mr", "John", "Doe", "1 Tebbit Mews", "GL52 2NF", "12345678", "123456", "Mr John Doe", WorkPhone: "12345678910")
-        /// </example>
-        /// 
-        /// <returns>
-        /// Customer JSON formatted as string
-        /// </returns>
-        public string Customer(string Email, string Title, string CustomerReference, string FirstName, string Surname, string Line1, string PostCode, string AccountNumber, string SortCode,
-            string AccountHolderName, string Line2 = "", string Line3 = "", string Line4 = "", string CompanyName = "", string DateOfBirth = "", string Initials = "", string HomePhone = "",
-            string MobilePhone = "", string WorkPhone = "")
-        {
-            if (Email == "" || Title == "" || CustomerReference == "" || FirstName == "" || Surname == "" || Line1 == "" || PostCode == "" || AccountNumber == "" || SortCode == "" || AccountHolderName == "")
-            {
-                throw new Exceptions.EmptyRequiredParameterException(
-                    "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
-                    );
-            }
-
-            CustomerChecks = new Utilities.CustomerPostChecks();
-            // Perform several basic checks to ensure the information provided for the customer is fit for use
-            CustomerChecks.CheckEmailAddressIsCorrectlyFormatted(Email);
-            CustomerChecks.CheckPostCodeIsCorectlyFormatted(PostCode);
-            CustomerChecks.CheckAccountNumberIsFormattedCorrectly(AccountNumber);
-            CustomerChecks.CheckSortCodeIsFormattedCorrectly(SortCode);
-            CustomerChecks.CheckAccountHolderNameIsFormattedCorrectly(AccountHolderName);
-
-            // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>();
 
-            // Add method arguments to the parameters only if they are not empty
-            try
+            CustomerChecks = new Utilities.CustomerPostChecks();
+            if (Email != "")
             {
-                Parameters.Add("email", Email);
-                Parameters.Add("title", Title);
-                Parameters.Add("customerRef", CustomerReference);
-                Parameters.Add("firstName", FirstName);
-                Parameters.Add("surname", Surname);
-                Parameters.Add("line1", Line1);
+                CustomerChecks.CheckEmailAddressIsCorrectlyFormatted(Email);
+                Parameters.Add("email", Email);       
+            }
+            if (PostCode != "")
+            {
+                CustomerChecks.CheckPostCodeIsCorectlyFormatted(PostCode);
                 Parameters.Add("postCode", PostCode);
+            }
+            if (AccountNumber != "")
+            {
+                CustomerChecks.CheckAccountNumberIsFormattedCorrectly(AccountNumber);
                 Parameters.Add("accountNumber", AccountNumber);
+            }
+            if (SortCode != "")
+            {
+                CustomerChecks.CheckSortCodeIsFormattedCorrectly(SortCode);
                 Parameters.Add("bankSortCode", SortCode);
+            }
+            if (AccountHolderName != "")
+            {
+                CustomerChecks.CheckAccountHolderNameIsFormattedCorrectly(AccountHolderName);
                 Parameters.Add("accountHolderName", AccountHolderName);
             }
-            catch (ArgumentException)
-            {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
-            }
-
+            if (Title != "") { Parameters.Add("title", Title); }
+            if (FirstName != "") { Parameters.Add("firstName", FirstName); }
+            if (Surname != "") { Parameters.Add("surname", Surname); }
+            if (Line1 != "") { Parameters.Add("line1", Line1); }
             if (Line2 != "") { Parameters.Add("line2", Line2); }
             if (Line3 != "") { Parameters.Add("line3", Line3); }
             if (Line4 != "") { Parameters.Add("line4", Line4); }
@@ -161,69 +109,101 @@ namespace EazySDK
             if (WorkPhone != "") { Parameters.Add("workPhone", WorkPhone); }
             if (MobilePhone != "") { Parameters.Add("mobilePhone", MobilePhone); }
 
-
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post("customer", _Parameters: Parameters);
+            var SendRequest = CreateRequest.Patch(string.Format("customer/{0}", Customer), _Parameters: Parameters);
 
+            // Pass the return string to the handler. This will throw an exception if it is not what we expect
+            Handler.GenericExceptionCheck(SendRequest);
 
-            // If no customers were returned
-            if (SendRequest.Contains("There is an existing Customer with the same Client"))
+            if (SendRequest.Contains("Customer updated"))
             {
-                throw new Exceptions.RecordAlreadyExistsException(
-                   string.Format("A customer with the customer reference of {0} already exists within the client. Please change the customer reference and re-submit", CustomerReference)
-                   );
+                return string.Format("The customer {0} has been updated successfully", Customer);
             }
             else
             {
-                // Pass the return string to the handler. This will throw an exception if it is not what we expect
-                Handler.GenericExceptionCheck(SendRequest);
-
-                // Get the JSON returned from EazyCustomerManager
-                JObject SendRequestAsJson = JObject.Parse(SendRequest);
-                // Get the list of Customers JSON objects
-                var Customer = SendRequestAsJson;
-                return string.Format("{0}", Customer);
+                return string.Format("An unknown error has occurred. The customer {0} has not been updated", Customer);
             }
         }
 
         /// <summary>
-        /// Create a new contract in EazyCustomerManager
+        /// Modify the regular collection amount of a contract in EazyCustomerManager
         /// </summary>
         /// 
-        /// <param name="Customer">The GUID of the customer the new contract will belong to</param>
-        /// <param name="ScheduleName">The schedule name the new contract will belong to</param>
-        /// <param name="StartDate">The desired start date of the new contract. This must be X working days in the future, where X is the number of working days agreed with EazyCollect.</param>
-        /// <param name="GiftAid">Whether the new contract will be eligible for GiftAid or not</param>
-        /// <param name="TerminationType">The method of termination for the new contract</param>
-        /// <param name="AtTheEnd">What happens to the new contract after the termination event have been triggered</param>
+        /// <remarks>
+        /// It is important to note that if the contract is already within the cut-off date for the next collection, the regular collection amount will not be amended until the following month.
+        /// </remarks>
         /// 
-        /// <OptionalParams>
-        /// <param name="NumberofDebits">The number of debits to be taken, this is mandatory if TerminationType has been set to "Collect certain number of debits"</param>
-        /// <param name="Frequency">Mandatory if the new contract is not ad-hoc. This parameter allows you to skip periods (Ex. a value of 2 would collect every second month)</param>
-        /// <param name="InitialAmount">Used if the first collection differs from the regular collection amount. Not to be used with ad-hoc contracts</param>
-        /// <param name="ExtraInitialAmount">Used if there are any additional charges (Ex. Gym joining fee)</param>
-        /// <param name="PaymentAmount">Mandatory if the contract is not ad-hoc. The regular collection amount of the new contract</param>
-        /// <param name="FinalAmount">Used if the final collection amount differs from the regular collection amount. Not to be used with ad-hoc contracts</param>
-        /// <param name="PaymentMonthInYear">Mandatory for annual contracts. The collection month for annual payments (1-12)</param>
-        /// <param name="PaymentDayInMonth">Mandatory for annual and monthly contracts. The collection day of the month (1-28 || Last day of month)</param>
-        /// <param name="PaymentDayInWeek">Mandatory for weekly contracts. The collection day of the week for weekly schedules (Monday .. Friday)</param>
-        /// <param name="TerminationDate">Mandatory if termination type is set to "End on exact date". The termination date of a contract</param>
-        /// <param name="AdditionalReference">An additional, searchable reference for the newly created contract</param>
-        /// <param name="CustomDDReference">A custom DD reference for the new contract. This option is only available upon request to Eazy Collect </param>
-        /// </OptionalParams>
+        /// <param name="Contract">The GUID of an existing contract within EazyCustomerManager</param>
+        /// <param name="PaymentAmount">The new regular collection amount the existing contract</param>
+        /// <param name="Comment">A comment to describe the actions performed when modifying the regular collection amount of the existing contract</param>
         /// 
-        /// <example>
-        /// Contract("ab09362d-f88e-4ee8-be85-e27e1a6ce06a", "test_schedule", "2019-06-20", "False", "Until further notice", "Switch to further notice")
-        /// </example>
-        /// 
-        /// <returns>
-        /// Contract JSON formatted as string
-        /// </returns>
-        public string Contract(string Customer, string ScheduleName, string StartDate, bool GiftAid, string TerminationType, string AtTheEnd, string NumberofDebits = "", string Frequency = "", string InitialAmount = "",
-            string ExtraInitialAmount = "", string PaymentAmount = "", string FinalAmount = "", string PaymentMonthInYear = "", string PaymentDayInMonth = "", string PaymentDayInWeek = "", string TerminationDate = "",
-            string AdditionalReference = "", string CustomDDReference = "")
+        /// <example>ContractAmount("36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b", "10.50", "Added x product");</example>
+        /// <returns></returns>
+        public string ContractAmount(string Contract, string PaymentAmount, string Comment)
         {
-            if (Customer == "" || ScheduleName == "" || StartDate == "" || TerminationType == "" || AtTheEnd == "")
+            if (PaymentAmount == "" || Comment == "")
+            {
+                throw new Exceptions.EmptyRequiredParameterException(
+                    "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
+                    );
+            }
+
+            PaymentChecks = new Utilities.PaymentPostChecks();
+            // Perform several basic checks to ensure the information provided for the customer is fit for use
+            PaymentChecks.CheckPaymentAmount(PaymentAmount);
+
+            // Create a new dictionary of parameters
+            Parameters = new Dictionary<string, string>();
+
+            // Add method arguments to the parameters only if they are not empty
+            try
+            {
+                Parameters.Add("amount", PaymentAmount);
+                Parameters.Add("comment", Comment);
+            }
+            catch (ArgumentException)
+            {
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+            }
+
+            var CreateRequest = Handler.Session(Settings);
+            var SendRequest = CreateRequest.Patch(string.Format("contract/{0}/amount", Contract), _Parameters: Parameters);
+            Handler.GenericExceptionCheck(SendRequest);
+
+            // If no customers were returned
+            if (SendRequest.Contains("Contract updated"))
+            {
+                return string.Format("The contract {0} has been updated with the new regular collection amount of {1}", Contract, PaymentAmount);
+                 
+            }
+            else if (SendRequest.Contains("Contract not found"))
+            {
+                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} could not be found within EazyCustomerManager", Contract));
+            }
+            else
+            {
+                return SendRequest;
+            }
+        }
+
+        /// <summary>
+        /// Modify the regular collection day of a weekly contract in EazyCustomerManager
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// It is important to note that if the contract is already within the cut-off date for the next collection, the regular collection day will not be amended until the following week.
+        /// </remarks>
+        /// 
+        ///
+        /// <param name="Contract">The GUID of an existing contract within EazyCustomerManager</param>
+        /// <param name="NewPaymentDay">The new regular collection day of the existing contract</param>
+        /// <param name="Comment">A comment to describe the amendment made to the contract</param>
+        /// <param name="AmmendNextPayment">Whether or not the next payment should be amended to account for the change in contract day</param>
+        /// <param name="NextPaymentAmount">If the next payment amount is to be amended, dictate what the next payment amount should be</param>
+        /// <returns></returns>
+        public string ContractDayWeekly(string Contract, string NewPaymentDay, string Comment, bool AmmendNextPayment, string NextPaymentAmount = "")
+        {
+            if (NewPaymentDay == "" || Comment == "")
             {
                 throw new Exceptions.EmptyRequiredParameterException(
                     "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
@@ -232,236 +212,37 @@ namespace EazySDK
 
             ContractChecks = new Utilities.ContractPostChecks();
             // Perform several basic checks to ensure the information provided for the customer is fit for use
-            ContractChecks.CheckScheduleNameIsAvailable(ScheduleName, Settings);
-            int TerminationTypeInt = ContractChecks.CheckTerminationTypeIsValid(TerminationType);
-            int AtTheEndInt = ContractChecks.CheckAtTheEndIsValid(AtTheEnd);
-            string StartDateDateString = ContractChecks.CheckStartDateIsValid(StartDate, Settings);
-            bool AdHocBool = ContractChecks.CheckScheduleAdHocStatus(ScheduleName, Settings);
-
-            if (AdHocBool)
-            {
-                if (bool.Parse(Settings.GetSection("contracts")["AutoFixTerminationTypeAdHoc"]))
-                {
-                    if (TerminationTypeInt != 1)
-                    {
-                        TerminationType = "Until further notice";
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-                    if (TerminationTypeInt != 1)
-                    {
-                        throw new Exceptions.InvalidParameterException(string.Format("Termination type must be set to 'Until further notice' on ad-hoc contracts"));
-                    }
-                }
-
-                if (bool.Parse(Settings.GetSection("contracts")["AutoFixAtTheEndAdHoc"]))
-                {
-                    if (AtTheEndInt != 1)
-                    {
-                        AtTheEnd = "Switch to further notice";
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-                    if (AtTheEndInt != 1)
-                    {
-                        throw new Exceptions.InvalidParameterException(string.Format("AtTheEnd must be set to 'Switch to further notice' on ad-hoc contracts"));
-                    }
-                }
-
-                if (InitialAmount != "") { throw new Exceptions.ParameterNotAllowedException(string.Format("InitialAmount is not allowed on ad-hoc contracts")); }
-                if (ExtraInitialAmount != "") { throw new Exceptions.ParameterNotAllowedException(string.Format("ExtraInitialAmount is not allowed on ad-hoc contracts")); }
-                if (FinalAmount != "") { throw new Exceptions.ParameterNotAllowedException(string.Format("FinalAmount is not allowed on ad-hoc contracts")); }
-            }
-            else
-            {
-                if (Frequency == "") { throw new Exceptions.EmptyRequiredParameterException(string.Format("Frequency is mandatory on non-ad-hoc contracts")); }
-                if (PaymentAmount == "") { throw new Exceptions.EmptyRequiredParameterException(string.Format("Payment amount is mandatory on non-ad-hoc contracts")); }
-
-                int FrequencyType = ContractChecks.CheckFrequency(ScheduleName, Settings);
-
-                if (FrequencyType == 0)
-                {
-                    if (PaymentDayInWeek == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("Payment day in week is mandatory on weekly contracts"));
-                    }
-                    else
-                    {
-                        ContractChecks.CheckPaymentDayInWeekIsValid(PaymentDayInWeek);
-                    }
-                }
-                else if (FrequencyType == 1)
-                {
-                    if (PaymentDayInMonth == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("Payment day in month is mandatory on monthly contracts"));
-                    }
-                    else
-                    {
-                        if (StartDateDateString.Substring(8, 2) != PaymentDayInMonth.PadLeft(2, '0'))
-                        {
-                            if (bool.Parse(Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"]))
-                            {
-                                PaymentDayInMonth = StartDateDateString.Substring(8, 2);
-                            }
-                            else
-                            {
-                                PaymentDayInMonth = StartDateDateString.Substring(8, 2);
-                                throw new Exceptions.InvalidParameterException(string.Format("PaymentDayInMonth must be set to {0} if the start date is {1}.", PaymentDayInMonth, StartDateDateString));
-                            }
-                        }
-                        ContractChecks.CheckPaymentDayInMonthIsValid(PaymentDayInMonth);
-                    }
-                }
-                else if (FrequencyType == 2)
-                {
-                    if (PaymentDayInMonth == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("Payment day in month is mandatory on annual contracts"));
-                    }
-                    else if (PaymentMonthInYear == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("Payment month in year is mandatory on annual contracts"));
-                    }
-                    else
-                    {
-                        if (StartDateDateString.Substring(5, 2) != PaymentMonthInYear.PadLeft(2, '0'))
-                        {
-                            if (bool.Parse(Settings.GetSection("contracts")["AutoFixPaymentMonthInYear"]))
-                            {
-                                PaymentMonthInYear = StartDateDateString.Substring(5, 2);
-                            }
-                            else
-                            {
-                                throw new Exceptions.InvalidParameterException(string.Format("PaymentMonthInYear must be set to {0} if the start date is {1}.", StartDateDateString.Substring(5, 2), StartDateDateString));
-                            }
-                        }
-                        if (StartDateDateString.Substring(8, 2) != PaymentDayInMonth.PadLeft(2, '0'))
-                        {
-                            if (bool.Parse(Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"]))
-                            {
-                                PaymentDayInMonth = StartDateDateString.Substring(8, 2);
-                            }
-                            else
-                            {
-                                throw new Exceptions.InvalidParameterException(string.Format("PaymentDayInMonth must be set to {0} if the start date is {1}.", StartDateDateString.Substring(8, 2), StartDateDateString));
-                            }
-                        }
-                        ContractChecks.CheckPaymentDayInMonthIsValid(PaymentDayInMonth);
-                        ContractChecks.CheckPaymentMonthInYearIsValid(PaymentMonthInYear);
-                    }
-                }
-
-                if (TerminationTypeInt == 0)
-                {
-                    if (NumberofDebits == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("NumberOfDebits is mandatory if TerminationType is set to 'Take certain number of debits'."));
-                    }
-                    else
-                    {
-                        ContractChecks.CheckNumberOfDebitsIsValid(NumberofDebits);
-                    }
-                }
-                else if (TerminationTypeInt == 1)
-                {
-                    if (AtTheEndInt != 1)
-                    {
-                        throw new Exceptions.InvalidParameterException(string.Format("AtTheEnd must be set to 'Switch to further notice' if TerminationType is set to 'Until further notice'."));
-                    }
-                }
-                else if (TerminationTypeInt == 2)
-                {
-                    if (TerminationDate == "")
-                    {
-                        throw new Exceptions.EmptyRequiredParameterException(string.Format("TerminationDate is mandatory if TerminationType set to 'End on exact date'."));
-                    }
-                    else
-                    {
-                        ContractChecks.CheckTerminationDateIsAfterStartDate(TerminationDate, StartDate);
-                    }
-                }
-            }
+            ContractChecks.CheckPaymentDayInWeekIsValid(NewPaymentDay);
+           
             // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>();
             // Add method arguments to the parameters only if they are not empty
             try
             {
-                Parameters.Add("scheduleName", ScheduleName);
-                Parameters.Add("start", StartDateDateString);
-                Parameters.Add("isGiftAid", GiftAid.ToString());
-                Parameters.Add("terminationType", TerminationType);
-                Parameters.Add("atTheEnd", AtTheEnd);
+                Parameters.Add("day", NewPaymentDay);
+                Parameters.Add("comment", Comment);
+                Parameters.Add("patchNextPayment", AmmendNextPayment.ToString());
             }
             catch (ArgumentException)
             {
                 throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
             }
 
-            if (NumberofDebits != "") { Parameters.Add("numberOfDebits", NumberofDebits); }
-            if (Frequency != "") { Parameters.Add("every", Frequency); }
-            if (InitialAmount != "") { Parameters.Add("initialAmount", InitialAmount); }
-            if (ExtraInitialAmount != "") { Parameters.Add("extraInitialAmount", ExtraInitialAmount); }
-            if (PaymentAmount != "") { Parameters.Add("amount", PaymentAmount); }
-            if (FinalAmount != "") { Parameters.Add("finalAmount", FinalAmount); }
-            if (PaymentMonthInYear != "") { Parameters.Add("paymentMonthInYear", PaymentMonthInYear); }
-            if (PaymentDayInMonth != "") { Parameters.Add("paymentDayInMonth", PaymentDayInMonth); }
-            if (PaymentDayInWeek != "") { Parameters.Add("paymentDayInWeek", PaymentDayInWeek); }
-            if (TerminationDate != "") { Parameters.Add("terminationDate", TerminationDate); }
-            if (AdditionalReference != "") { Parameters.Add("additionalReference", AdditionalReference); }
-            if (CustomDDReference != "") { Parameters.Add("customDirectDebitReference", CustomDDReference); }
+            if (AmmendNextPayment) { Parameters.Add("nextPaymentPatchAmount", NextPaymentAmount); }
 
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post(string.Format("customer/{0}/contract", Customer), Parameters);
-
-            // Pass the return string to the handler. This will throw an exception if it is not what we expect
-            Handler.GenericExceptionCheck(SendRequest);
-            // Get the JSON returned from EazyCustomerManager
-            JObject SendRequestAsJson = JObject.Parse(SendRequest);
-            // Get the list of Contracts JSON objects
-            JToken Contracts = SendRequestAsJson["Contracts"];
-            return Contracts.ToString();
-        }
-
-        /// <summary>
-        /// Cancel a Direct Debit within EazyCustomerManager
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// NOTE: Canceling a Direct Debit will not cancel the payment creation process.The reason being; There are two parts to a contract, the schedule and the Direct Debit.Cancelling the Direct Debit will 
-        /// cease future payments to the bank, but it will generate payments on the system. These payments will return unpaid, though any ad-hoc payments must be manually deleted.
-        /// </remarks>
-        /// 
-        /// <param name="Contract">The GUID of the contract to be archived</param>
-        /// 
-        /// <example>
-        /// CancelDirectDebit("ab09362d-f88e-4ee8-be85-e27e1a6ce06a")
-        /// </example>
-        /// 
-        /// <returns>
-        /// A confirmation string
-        /// </returns>
-        public string CancelDirectDebit(string Contract)
-        {
-            Session CreateRequest = Handler.Session(Settings);
-            string SendRequest = CreateRequest.Post(string.Format("contract/{0}/cancel", Contract));
+            var SendRequest = CreateRequest.Patch(string.Format("contract/{0}/weekly", Contract), Parameters);
 
             // Pass the return string to the handler. This will throw an exception if it is not what we expect
             Handler.GenericExceptionCheck(SendRequest);
 
-            if (SendRequest.Contains("Contract not found"))
+            if (SendRequest.Contains("Contract updated"))
             {
-                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} could not be found.", Contract));
+                return string.Format("The contract {0} has been updated with the new regular collection day of {1}", Contract, NewPaymentDay);
+            }
+            else if (SendRequest.Contains("Contract not found"))
+            {
+                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} could not be found within EazyCustomerManager", Contract));
             }
             else
             {
@@ -470,164 +251,185 @@ namespace EazySDK
         }
 
         /// <summary>
-        /// Archive a contract within ECM3
+        /// Modify the regular collection day of a monthly contract in EazyCustomerManager
         /// </summary>
         /// 
         /// <remarks>
-        /// NOTE: Archiving a contract achieves different results to cancelling a Direct Debit.First and most importantly, the process is irreversible.Once a contract is archived, it can not
-        /// be unarchived.The process flow works like so; The Direct Debit is cancelled, any arrears that are outstanding are written off, any future scheduled payments are cancelled and finally, 
-        /// the contract status is set to archived.Like cancelling a Direct Debit, any ad_hoc payments must be manually cancelled.
-        /// </remarks>
-        /// 
-        /// <param name="Contract">The GUID of the contract owning the Direct Debit to be canceled</param>
-        /// 
-        /// <example>
-        /// CancelDirectDebit("ab09362d-f88e-4ee8-be85-e27e1a6ce06a")
-        /// </example>
-        ///
-        /// <returns>
-        /// A confirmation string
-        /// </returns>
-        public string ArchiveContract(string Contract)
-        {
-            Session CreateRequest = Handler.Session(Settings);
-            string SendRequest = CreateRequest.Post(string.Format("contract/{0}/archive", Contract));
-
-            // Pass the return string to the handler. This will throw an exception if it is not what we expect
-            Handler.GenericExceptionCheck(SendRequest);
-
-            if (SendRequest.Contains("Contract is already archived"))
-            {
-                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} is already archived.", Contract));
-            }
-            else
-            {
-                return SendRequest;
-            }
-        }
-
-        /// <summary>
-        /// Reactivate a Direct Debit within EazyCustomerManager
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// NOTE: Reactivating a contract changes the status of a contract from ‘Cancelled’ to ‘Pending to activate’. This will sent a new instruction to the bank, generating an 0N charge.
+        /// It is important to note that if the contract is already within the cut-off date for the next collection, the regular collection day will not be amended until the following month.
         /// </remarks>
         /// 
         ///
-        /// <param name="Contract"> GUID of the contract to be re-activated</param>
-        /// 
-        /// <example>
-        /// ReactivateDirectDebit("ab09362d-f88e-4ee8-be85-e27e1a6ce06a")
-        /// </example>
-        /// 
-        /// <returns>
-        /// Confirmation string
-        /// </returns>
-
-        public string ReactivateDirectDebit(string Contract)
+        /// <param name="Contract">The GUID of an existing contract within EazyCustomerManager</param>
+        /// <param name="NewPaymentDay">The new regular collection day of the existing contract</param>
+        /// <param name="Comment">A comment to describe the amendment made to the contract</param>
+        /// <param name="AmmendNextPayment">Whether or not the next payment should be amended to account for the change in contract day</param>
+        /// <param name="NextPaymentAmount">If the next payment amount is to be amended, dictate what the next payment amount should be</param>
+        /// <returns></returns>
+        public string ContractDayMonthly(string Contract, string NewPaymentDay, string Comment, bool AmendNextPayment, string NextPaymentAmount = "")
         {
-            Session CreateRequest = Handler.Session(Settings);
-            string SendRequest = CreateRequest.Post(string.Format("contract/{0}/reactivate", Contract));
-
-            // Pass the return string to the handler. This will throw an exception if it is not what we expect
-            Handler.GenericExceptionCheck(SendRequest);
-            return SendRequest;
-        }
-
-        /// <summary>
-        /// Restart a contract within EazyCustomerManager
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// NOTE: Restarting a contract is fundamentally different to reactivating a contract as it can only be performed if the ollowing criteria have been met
-        ///
-        /// - The original contract was a fixed term which has expired
-        /// - The payment schedule has met its end naturally, and the contract status has become 'Expired'
-        ///
-        /// This call adds a new contract onto the end of the previous contract, in effect 'recycling' the previous direct debit at the bank which can save on Direct Debit setup charges.
-        /// </remarks>
-        ///
-        /// <param name="Contract">The GUID of the contract to be restated</param>
-        /// <param name="TerminationType">The termination type of the restarted contract</param>
-        /// <param name="AtTheEnd">What happens to the contract after the termination clause has been met</param>
-        /// 
-        /// <OptionalParams>
-        /// <param name="PaymentAmount">Mandatory if the contract is not ad-hoc. The regular collection amount for the restated contract/param>
-        /// <param name="InitialAmount">Used if the first collection amount is different from the rest.Not to be used on ad-hoc contracts.</param>
-        /// <param name="FinalAmount">Used if the final collection amount is different from the rest.Not to be used on ad-hoc contracts.</param>
-        /// <param name="PaymentDayInMonth">The collection day for monthly contracts.Accepts 1-28 or 'last day of month'</param>
-        /// <param name="PaymentMonthInYear">The collection month for annual contracts. Accepts 1-12</param>
-        /// <param name="AdditionalReference">An additional reference for the newlycreated contract</param>
-        /// 
-        /// </OptionalParams>
-        /// <example>
-        /// ReactivateDirectDebit("ab09362d-f88e-4ee8-be85-e27e1a6ce06a")
-        /// </example>
-        /// 
-        /// <returns>
-        /// Confirmation string
-        /// </returns>
-        public string RestartContract(string Contract, string TerminationType, string AtTheEnd, string PaymentAmount = "", string InitialAmount = "", string FinalAmount = "",
-            string PaymentDayInMonth = "", string PaymentMonthInYear = "", string AditionalReference = "")
-        {
-            if (Contract == "" || TerminationType == "" || AtTheEnd == "")
+            if (NewPaymentDay == "" || Comment == "")
             {
                 throw new Exceptions.EmptyRequiredParameterException(
                     "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
                 );
             }
 
+            if (AmendNextPayment)
+            {
+                if (NextPaymentAmount == "")
+                {
+                    throw new Exceptions.EmptyRequiredParameterException("NextPaymentAmount must be called if AmendNextPayment is set to true.");
+                }
+            }
+            else
+            {
+                if (NextPaymentAmount != "")
+                {
+                    throw new Exceptions.ParameterNotAllowedException("NextPaymentAmount must not be called if AmendNextPayment is set to false.");
+                }
+            }
+
+
+            ContractChecks = new Utilities.ContractPostChecks();
+            // Perform several basic checks to ensure the information provided for the customer is fit for use
+            ContractChecks.CheckPaymentDayInMonthIsValid(NewPaymentDay);
+
             // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>();
             // Add method arguments to the parameters only if they are not empty
             try
             {
-                Parameters.Add("terminationType", TerminationType);
-                Parameters.Add("atTheEnd", AtTheEnd);
+                Parameters.Add("monthDay", NewPaymentDay);
+                Parameters.Add("comment", Comment);
+                Parameters.Add("patchNextPayment", AmendNextPayment.ToString());
             }
             catch (ArgumentException)
             {
                 throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
             }
 
-            if (PaymentAmount != "") { Parameters.Add("amount", PaymentAmount); }
-            if (InitialAmount != "") { Parameters.Add("initialAmount", InitialAmount); }
-            if (FinalAmount != "") { Parameters.Add("finalAmount", FinalAmount); }
-            if (PaymentDayInMonth != "") { Parameters.Add("paymentDayInMonth", PaymentDayInMonth); }
-            if (PaymentMonthInYear != "") { Parameters.Add("paymentMonthInYear", PaymentMonthInYear); }
-            if (AditionalReference != "") { Parameters.Add("additionalReference", AditionalReference); }
+            if (AmendNextPayment) { Parameters.Add("nextPaymentPatchAmount", NextPaymentAmount); }
 
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post(string.Format("contract/{0}/restart", Contract), Parameters);
+            var SendRequest = CreateRequest.Patch(string.Format("contract/{0}/monthly", Contract), Parameters);
 
             // Pass the return string to the handler. This will throw an exception if it is not what we expect
             Handler.GenericExceptionCheck(SendRequest);
-            return SendRequest;
+
+            if (SendRequest.Contains("Contract updated"))
+            {
+                return string.Format("The contract {0} has been updated with the new regular collection day of {1}", Contract, NewPaymentDay);
+            }
+            else if (SendRequest.Contains("Contract not found"))
+            {
+                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} could not be found within EazyCustomerManager", Contract));
+            }
+            else
+            {
+                return SendRequest;
+            }
         }
 
         /// <summary>
-        /// Create a new payment against an existing contract in EazyCustomerManager
+        /// Modify the regular collection day  and month of an annual contract in EazyCustomerManager
         /// </summary>
+        /// 
+        /// <remarks>
+        /// It is important to note that if the contract is already within the cut-off date for the next collection, the regular collection day will not be amended until the following year.
+        /// </remarks>
+        /// 
         ///
-        /// <param name="Contract">The GUID of the contact a payment will be made against</param>
-        /// <param name="PaymentAmount">The total amount to be collected from the new payment</param>
-        /// <param name="CollectionDate">The desired start date of the new contract. This must be x working days in the future, where x is the agreed amount of working days with Eazy Collect.</param>
-        /// <param name="Comment">A comment related to the new payment/param>
-        /// 
-        /// <OptionalParams>
-        /// <param name="IsCredit">If you have your own SUN and you have made prior arrangements with Eazy Collect, this may be passed to issue a credit to a customer.By default, it is set to false.</param>
-        /// </OptionalParams>
-        /// <example>
-        /// Payment("42217d45-cf22-4430-ab02-acc1f8a2d020", "10.00", "2019-05-07", "A new payment")
-        /// </example>
-        /// 
-        /// <returns>
-        /// Confirmation string
-        /// </returns>
-        public string Payment(string Contract, string PaymentAmount, string CollectionDate, string Comment, bool IsCredit = false)
+        /// <param name="Contract">The GUID of an existing contract within EazyCustomerManager</param>
+        /// <param name="NewPaymentDay">The new regular collection day of the existing contract</param>
+        /// <param name="NewPaymentMonth">The new regular collection month of the existing contract</param>
+        /// <param name="Comment">A comment to describe the amendment made to the contract</param>
+        /// <param name="AmmendNextPayment">Whether or not the next payment should be amended to account for the change in contract day</param>
+        /// <param name="NextPaymentAmount">If the next payment amount is to be amended, dictate what the next payment amount should be</param>
+        /// <returns></returns>
+        public string ContractDayAnnually(string Contract, string NewPaymentDay, string NewPaymentMonth, string Comment, bool AmendNextPayment, string NextPaymentAmount = "")
         {
-            if (Contract == "" || PaymentAmount == "" || CollectionDate == "" || Comment == "")
+            if (NewPaymentDay == "" || NewPaymentMonth == "" || Comment == "")
+            {
+                throw new Exceptions.EmptyRequiredParameterException(
+                    "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
+                );
+            }
+
+            if (AmendNextPayment)
+            {
+                if (NextPaymentAmount == "")
+                {
+                    throw new Exceptions.EmptyRequiredParameterException("NextPaymentAmount must be called if AmendNextPayment is set to true.");
+                }
+            }
+            else
+            {
+                if (NextPaymentAmount != "")
+                {
+                    throw new Exceptions.ParameterNotAllowedException("NextPaymentAmount must not be called if AmendNextPayment is set to false.");
+                }
+            }
+
+            ContractChecks = new Utilities.ContractPostChecks();
+            // Perform several basic checks to ensure the information provided for the customer is fit for use
+            ContractChecks.CheckPaymentDayInMonthIsValid(NewPaymentDay);
+            ContractChecks.CheckPaymentMonthInYearIsValid(NewPaymentMonth);
+
+            // Create a new dictionary of parameters
+            Parameters = new Dictionary<string, string>();
+            // Add method arguments to the parameters only if they are not empty
+            try
+            {
+                Parameters.Add("monthDay", NewPaymentDay);
+                Parameters.Add("month", NewPaymentMonth);
+                Parameters.Add("comment", Comment);
+                Parameters.Add("patchNextPayment", AmendNextPayment.ToString());
+            }
+            catch (ArgumentException)
+            {
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+            }
+
+            if (AmendNextPayment) { Parameters.Add("nextPaymentPatchAmount", NextPaymentAmount); }
+
+            var CreateRequest = Handler.Session(Settings);
+            var SendRequest = CreateRequest.Patch(string.Format("contract/{0}/annual", Contract), Parameters);
+
+            // Pass the return string to the handler. This will throw an exception if it is not what we expect
+            Handler.GenericExceptionCheck(SendRequest);
+
+            if (SendRequest.Contains("Contract updated"))
+            {
+                return string.Format("The contract {0} has been updated with the new regular collection day of {1} and regular collection month of {2}", Contract, NewPaymentDay, NewPaymentMonth);
+            }
+            else if (SendRequest.Contains("Contract not found"))
+            {
+                throw new Exceptions.ResourceNotFoundException(string.Format("The contract {0} could not be found within EazyCustomerManager", Contract));
+            }
+            else
+            {
+                return SendRequest;
+            }
+        }
+
+        /// <summary>
+        /// Modify a payment within EazyCusotmerManager
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// It is important to note that once a payment has been submitted to BACS, it is too late to amend the payment
+        /// </remarks>
+        /// 
+        /// <param name="Contract">The GUID of an existing contract within EazyCustomerManager</param>
+        /// <param name="Payment">The GUID of an existing payment within EazyCustomerManager</param>
+        /// <param name="PaymentAmount">The new regular collection amount the existing contract</param>
+        /// <param name="PaymentDay">The new collection day of the payment</param>
+        /// <param name="Comment">A comment to describe the actions performed when amending the payment</param>
+        /// 
+        /// <returns></returns>
+        public string Payment(string Contract, string Payment, string PaymentAmount, string PaymentDay, string Comment)
+        {
+            if (PaymentAmount == "" || PaymentDay == "" || Comment == "")
             {
                 throw new Exceptions.EmptyRequiredParameterException(
                     "One or more required parameters are empty. Please double check all required parameters are filled and re-submit."
@@ -638,16 +440,13 @@ namespace EazySDK
             Parameters = new Dictionary<string, string>();
 
             PaymentChecks = new Utilities.PaymentPostChecks();
-            bool _PaymentAmountNotNegative = PaymentChecks.CheckPaymentAmount(PaymentAmount);
-            string TrueCollectionDate = PaymentChecks.CheckPaymentDate(CollectionDate, Settings);
-            bool IsCreditAllowed = PaymentChecks.CheckIfCreditIsAllowed(Settings);
-
+            PaymentChecks.CheckPaymentAmount(PaymentAmount);
 
             // Add method arguments to the parameters only if they are not empty
             try
             {
                 Parameters.Add("amount", PaymentAmount);
-                Parameters.Add("date", TrueCollectionDate);
+                Parameters.Add("date", PaymentDay);
                 Parameters.Add("comment", Comment);
             }
             catch (ArgumentException)
@@ -655,24 +454,8 @@ namespace EazySDK
                 throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
             }
 
-            if (!IsCreditAllowed)
-            {
-                if (IsCredit)
-                {
-                    throw new Exceptions.InvalidParameterException("Is Credit is not allowed.");
-                }
-            }
-            else
-            {
-                if (IsCredit)
-                {
-                    Parameters.Add("isCredit", IsCredit.ToString());
-                }
-            }
-
-
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post(string.Format("contract/{0}/payment", Contract), Parameters);
+            var SendRequest = CreateRequest.Patch(string.Format("contract/{0}/payment/{1}", Contract, Payment), Parameters);
 
             if (SendRequest.Contains("Contract not found"))
             {

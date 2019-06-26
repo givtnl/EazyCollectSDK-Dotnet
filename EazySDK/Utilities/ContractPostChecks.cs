@@ -142,7 +142,7 @@ namespace EazySDK.Utilities
         {
             try
             {
-                if (int.Parse(PaymentDayInMonth) >= 1 && int.Parse(PaymentDayInMonth) <= 28 || PaymentDayInMonth.ToLower() == "last day of month")
+                if (int.Parse(PaymentDayInMonth) >= 1 && int.Parse(PaymentDayInMonth) <= 28)
                 {
                     return true;
                 }
@@ -151,9 +151,15 @@ namespace EazySDK.Utilities
                     throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInMonth. The PaymentDayInMonth must be between 1 and 28 or be set to 'last day of month'", PaymentDayInMonth));
                 }
             }
-            catch
+            catch (FormatException)
             {
-                throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInMonth. The PaymentDayInMonth must be between 1 and 28 or be set to 'last day of month'", PaymentDayInMonth));
+                if (PaymentDayInMonth.ToLower() == "last day of month")
+                {
+                    return true;
+                } else
+                {
+                    throw new Exceptions.InvalidParameterException(string.Format("{0} is not a valid PaymentDayInMonth. The PaymentDayInMonth must be between 1 and 28 or be set to 'last day of month'", PaymentDayInMonth));
+                }
             }
         }
 
@@ -238,7 +244,7 @@ namespace EazySDK.Utilities
                 throw new Exceptions.InvalidParameterException("Either the termination date or the start date are not valid ISO dates.", e);
             }
 
-            if (TermDate < SDate)
+            if (TermDate <= SDate)
             {
                 throw new Exceptions.InvalidParameterException(string.Format("The Termination date of {0} is too early. It must be after the date {1}", TerminationDate, StartDate));
             }
@@ -263,10 +269,19 @@ namespace EazySDK.Utilities
             SchedulesReader reader = new SchedulesReader();
             JObject RootJson = reader.ReadSchedulesFile(Settings);
             JObject SchedulesJson = RootJson["Schedules"].ToObject<JObject>();
-
             JToken Schedule = SchedulesJson.GetValue(ScheduleName, StringComparison.CurrentCultureIgnoreCase);
+            bool AdHoc = new bool();
 
-            if (bool.Parse(Schedule["ScheduleAdHoc"].ToString()))
+            try
+            {
+                AdHoc = bool.Parse(Schedule["ScheduleAdHoc"].ToString());
+            }
+            catch (NullReferenceException)
+            {
+                throw new Exceptions.InvalidParameterException("The schedule {0} does not exist for the given client", ScheduleName);
+            }
+
+            if (AdHoc)
             {
                 return true;
             }
@@ -287,12 +302,42 @@ namespace EazySDK.Utilities
         /// </returns>
         public string CheckStartDateIsValid(string StartDate, IConfiguration Settings)
         {
-            DateTime InitialDate = DateTime.Parse(StartDate);
-            int InitialProcessingDays = int.Parse(Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"]);
-            CheckWorkingDays WorkingDays = new CheckWorkingDays();
+            DateTime InitialDate = new DateTime();
+            int InitialProcessingDays = new int();
+            bool AutoFixStartDate = new bool();
 
+            try
+            {
+                InitialDate = DateTime.Parse(StartDate);
+            }
+            catch (FormatException)
+            {
+                throw new Exceptions.InvalidStartDateException(string.Format("The start date {0} is not valid. Please re-submit in ISO format (yyyy-mm-dd)", StartDate));
+            }
+
+            try
+            {
+                InitialProcessingDays = int.Parse(Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"]);
+            }
+            catch (FormatException)
+            {
+                string InvalidIPD = Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"];
+                throw new Exceptions.InvalidSettingsConfigurationException("The InitialProcessingDays setting is misconfigured. It was expecting an integer, and received '{0}' instead", InvalidIPD);
+            }
+
+            try
+            {
+                AutoFixStartDate = bool.Parse(Settings.GetSection("contracts")["AutoFixStartDate"]);
+            }
+            catch (FormatException)
+            {
+                string InvalidAFSD = Settings.GetSection("contracts")["AutoFixStartDate"];
+                throw new Exceptions.InvalidSettingsConfigurationException("The AutoFixStartDate setting is misconfigured. It was expecting a boolean, and received '{0}' instead", InvalidAFSD);
+            }
+
+            CheckWorkingDays WorkingDays = new CheckWorkingDays();
             DateTime FirstAvailableDate = WorkingDays.CheckWorkingDaysInFuture(InitialProcessingDays);
-            bool AutoFixStartDate = bool.Parse(Settings.GetSection("contracts")["AutoFixStartDate"]);
+            
 
             if (InitialDate < FirstAvailableDate)
             {
@@ -307,7 +352,7 @@ namespace EazySDK.Utilities
             }
             else
             {
-                return StartDate;
+                return InitialDate.ToString("yyyy-MM-dd");
             }
         }
 
@@ -324,9 +369,18 @@ namespace EazySDK.Utilities
         {
             SchedulesReader Reader = new SchedulesReader();
             JObject SchedulesList = Reader.ReadSchedulesFile(Settings);
-            JToken ScheduleToken = SchedulesList.SelectToken("Schedules." + ScheduleName);
-            string Frequency = ScheduleToken.Value<string>("ScheduleFrequency");
+            string Frequency = "";
 
+            try
+            {
+                JToken ScheduleToken = SchedulesList.SelectToken("Schedules." + ScheduleName);
+                Frequency = ScheduleToken.Value<string>("ScheduleFrequency");
+            }
+            catch (Newtonsoft.Json.JsonException)
+            {
+                throw new Exceptions.InvalidIOConfiguration("The schedule {0} could not be found.", ScheduleName);
+            }
+            
             if (Frequency == "Weekly")
             {
                 return 0;
