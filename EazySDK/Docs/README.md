@@ -12,7 +12,7 @@
       - [payments](#payments)
       - [warnings](#warnings)
       - [other](#other)
-- [Functions](#funcions)
+- [Functions](#functions)
   - [Get](#get)
       - [CallbackUrl](#callbackurl)
       - [Customers](#customers)
