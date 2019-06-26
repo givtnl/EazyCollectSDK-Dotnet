@@ -123,7 +123,7 @@ namespace EazySDK
             if (WorkPhone != "") { Parameters.Add("workPhoneNumber", WorkPhone); }
 
             // If no parameters have been passed and the customerSearch warning is enabled, warn the user
-            if (bool.Parse(Settings.GetSection("warnings")["CustomerSearch"]) == true && Parameters.Count == 0)
+            if (bool.Parse(Settings.GetSection("warnings")["CustomerSearchWarning"]) == true && Parameters.Count == 0)
             {
                 Console.WriteLine("Searching for customers without passing any parameters may take some time.");
             }
