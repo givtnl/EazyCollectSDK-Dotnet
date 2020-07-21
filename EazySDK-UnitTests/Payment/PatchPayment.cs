@@ -23,7 +23,7 @@ namespace EazySDK_UnitTests
         public void TestPatchPaymentValidPatch()
         {
             var Patch = new Patch(Settings);
-            var Req = Patch.Payment("2b62a358-9a1a-4c71-9450-e419e393dcd1", "a75f9829-2753-4f67-aafb-bb24aba27dd1", "10.00", "2019-07-15", "test comment");
+            var Req = Patch.Payment("2b62a358-9a1a-4c71-9450-e419e393dcd1", "a75f9829-2753-4f67-aafb-bb24aba27dd1", "10.00", "2020-08-15", "test comment");
             Assert.IsTrue(Req.Contains("Payment updated"));
         }
     }

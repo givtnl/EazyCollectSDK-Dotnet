@@ -23,24 +23,24 @@ namespace EazySDK_UnitTests
         public void TestValidStartDate()
         {
             Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"] = "10";
-            string Schedule = ContractCheck.CheckStartDateIsValid("2019-07-15", Settings);
-            Assert.IsTrue(Schedule == "2019-07-15");
+            string Schedule = ContractCheck.CheckStartDateIsValid("2020-08-15", Settings);
+            Assert.IsTrue(Schedule == "2020-08-15");
         }
 
         [TestMethod]
         public void TestValidStartDateAfterBankHoliday()
         {
-            Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"] = "43";
-            string Schedule = ContractCheck.CheckStartDateIsValid("2019-08-27", Settings);
-            Assert.IsTrue(Schedule == "2019-08-27");
+            Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"] = "29";
+            string Schedule = ContractCheck.CheckStartDateIsValid("2020-09-01", Settings);
+            Assert.IsTrue(Schedule == "2020-09-01");
         }
 
         [TestMethod]
         public void TestStartDateAcceptsNonISODates()
         {
             Settings.GetSection("directDebitProcessingDays")["InitialProcessingDays"] = "10";
-            var Scheudle = ContractCheck.CheckStartDateIsValid("15/07/2019", Settings);
-            Assert.IsTrue(Scheudle == "2019-07-15");
+            var Scheudle = ContractCheck.CheckStartDateIsValid("15/08/2020", Settings);
+            Assert.IsTrue(Scheudle == "2020-08-15");
         }
 
         [TestMethod]

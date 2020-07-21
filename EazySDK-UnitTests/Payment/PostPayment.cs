@@ -23,7 +23,7 @@ namespace EazySDK_UnitTests
         public void TestPostPaymentUsingAllRequiredFileds()
         {
             var Post = new Post(Settings);
-            var Req = Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2019-07-15", "A comment");
+            var Req = Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2020-08-15", "A comment");
             Assert.IsTrue(Req.Contains("\"Error\":null"));
         }
 
@@ -32,7 +32,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("payments")["IsCreditAllowed"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2019-07-15", "A comment", true);
+            var Req = Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2020-08-15", "A comment", true);
             Assert.IsTrue(Req.Contains("Client is not allowed to credit customer"));
         }
 
@@ -50,7 +50,7 @@ namespace EazySDK_UnitTests
         public void TestPostPaymentACommentIsRequired()
         {
             var Post = new Post(Settings);
-            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2019-07-15", "");
+            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2020-08-15", "");
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace EazySDK_UnitTests
         public void TestPostPaymentPaymentAmountCannotBeNegative()
         {
             var Post = new Post(Settings);
-            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "-10.00", "2019-07-15", "A comment");
+            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "-10.00", "2020-08-15", "A comment");
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace EazySDK_UnitTests
         public void TestPostPaymentInvalidContractThrowsException()
         {
             var Post = new Post(Settings);
-            Post.Payment("1802e1dd-a657-428c-b8d0-b203", "10.00", "2019-07-15", "A comment");
+            Post.Payment("1802e1dd-a657-428c-b8d0-b203", "10.00", "2020-08-15", "A comment");
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("payments")["IsCreditAllowed"] = "false";
             var Post = new Post(Settings);
-            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2019-07-15", "A comment", true);
+            Post.Payment("1802e1dd-a657-428c-b8d0-ba162fc76203", "10.00", "2020-08-15", "A comment", true);
         }
 
         [TestMethod]

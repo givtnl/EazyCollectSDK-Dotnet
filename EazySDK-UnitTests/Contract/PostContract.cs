@@ -7,6 +7,8 @@ namespace EazySDK_UnitTests
     [TestClass]
     public class UnitTestPostContract
     {
+
+        private string startDate = "2020-08-15";
         private IConfiguration Settings { get; set; }
 
         [TestInitialize]
@@ -23,7 +25,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContract()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice");
 
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
@@ -43,7 +45,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixTerminationTypeAdHoc"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "End on exact date", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "End on exact date", "Switch to further notice");
 
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
@@ -53,7 +55,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixAtTheEndAdHoc"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Expire");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Expire");
 
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
@@ -62,7 +64,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractGiftAidTrue()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", true, "Until further notice", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, true, "Until further notice", "Switch to further notice");
 
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
@@ -71,7 +73,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractAllowAddiitonalRef()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", AdditionalReference: "Test");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice", AdditionalReference: "Test");
 
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
@@ -81,7 +83,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractInvalidCustomerException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba8", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba8", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice");
         }
 
         [TestMethod]
@@ -99,7 +101,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixTerminationTypeAdHoc"] = "false";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Take certain number of debits", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Take certain number of debits", "Switch to further notice");
         }
 
         [TestMethod]
@@ -108,7 +110,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixAtTheEndAdHoc"] = "false";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Expire");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Expire");
         }
 
         [TestMethod]
@@ -116,7 +118,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractInitialAmountException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", InitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice", InitialAmount: "10.00");
         }
 
         [TestMethod]
@@ -124,7 +126,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractExtraInitialAmountException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", ExtraInitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice", ExtraInitialAmount: "10.00");
         }
 
         [TestMethod]
@@ -132,7 +134,7 @@ namespace EazySDK_UnitTests
         public void TestPostAdHocContractFinalAmountException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", FinalAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "adhoc_monthly_free", startDate, false, "Until further notice", "Switch to further notice", FinalAmount: "10.00");
         }
 
         [TestMethod]
@@ -140,14 +142,14 @@ namespace EazySDK_UnitTests
         public void TestPostContractInvalidScheduleNameException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "not a schedule", "2019-07-15", false, "Until further notice", "Switch to further notice");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "not a schedule", startDate, false, "Until further notice", "Switch to further notice");
         }
 
         [TestMethod]
         public void TestPostMonthlyContractUntilFurtherNotice()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -155,7 +157,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractTakeCertainNumberOfDebits()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", NumberofDebits: "10");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", NumberofDebits: "10");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -164,7 +166,7 @@ namespace EazySDK_UnitTests
         {
 
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", TerminationDate: "2019-10-10");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2020-08-15", false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", TerminationDate: "2019-10-10");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -184,7 +186,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-08-01", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2020-08-04", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -192,7 +194,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractInitialAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", InitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", InitialAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -200,7 +202,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractExtraInitialAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", ExtraInitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", ExtraInitialAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -208,7 +210,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractFinalAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", FinalAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", FinalAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -216,7 +218,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractAdditionalReference()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", AdditionalReference: "A Reference");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -225,7 +227,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractInvalidCustomerException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19db", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19db", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -233,7 +235,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractInvalidScheduleException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "not a schedule", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "not a schedule", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -251,7 +253,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"] = "false";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "1");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "1");
         }
 
         [TestMethod]
@@ -259,7 +261,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractFrequencyMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -267,7 +269,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractPaymentAmountMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -275,7 +277,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractIfCertainNumberOfDebitsNumberOfDebitsMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -283,7 +285,7 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractIfEndOnExactDateTerminationDateMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15");
         }
 
         [TestMethod]
@@ -291,14 +293,14 @@ namespace EazySDK_UnitTests
         public void TestPostMonthlyContractIfEndOnExactDateTerminationDateMustNotBeSoonerThanStartDateException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", "2019-07-15", false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", TerminationDate: "1990-01-01");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "monthly_free", startDate, false, "End On Exact Date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", TerminationDate: "1990-01-01");
         }
 
         [TestMethod]
         public void TestPostAnnualContractUntilFurtherNotice()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -306,7 +308,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractTakeCertainNumberOfDebits()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", NumberofDebits: "10");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Take certain number of debits", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", NumberofDebits: "10");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -314,7 +316,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractEndOnExactDate()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", TerminationDate: "2020-01-01");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", TerminationDate: "2020-10-01");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -325,7 +327,7 @@ namespace EazySDK_UnitTests
             Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"] = "true";
             Settings.GetSection("contracts")["AutoFixPaymentMonthInYear"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "1990-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "1990-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -334,7 +336,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixPaymentDayInMonth"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "1", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "1", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -343,7 +345,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("contracts")["AutoFixPaymentMonthInYear"] = "true";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "1");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "1");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -351,7 +353,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractInitialAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", InitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", InitialAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -359,7 +361,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractExtraInitialAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", ExtraInitialAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", ExtraInitialAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -367,7 +369,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractFinalAmount()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", FinalAmount: "10.00");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", FinalAmount: "10.00");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -375,7 +377,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractAdditionalReference()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", AdditionalReference: "A Reference");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -384,7 +386,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractInvalidCustomerException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dbaf", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dbaf", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -394,7 +396,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("Contracts")["AutoFixStartDate"] = "false";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "1990-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "1990-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -404,7 +406,7 @@ namespace EazySDK_UnitTests
         {
             Settings.GetSection("Contracts")["AutoFixPaymentDayInYear"] = "false";
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "1");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "1");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -413,7 +415,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractPaymentAmountMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -422,7 +424,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractFrequencyMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -431,7 +433,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractIfEndOnExactDateTerminationDateMustBePassed()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -440,7 +442,7 @@ namespace EazySDK_UnitTests
         public void TestPostAnnualContractIfEndOnExactDateTerminationDateMustNotBeSoonerThanStartDate()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", "2019-07-15", false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "7", TerminationDate: "1990-01-01");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "annual_free", startDate, false, "End on exact date", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInMonth: "15", PaymentMonthInYear: "8", TerminationDate: "1990-01-01");
             Assert.IsTrue(Req.Contains("DirectDebitRef"));
         }
 
@@ -449,7 +451,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractInvalidCustomerException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba8", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba8", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -466,7 +468,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractInvalidPaymentDayInWeekException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Sunday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Sunday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -474,7 +476,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractFrequencyMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -482,7 +484,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractPaymentAmountMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -490,7 +492,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractIfCertainNumberOfDebitsNumberOfDebitsMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Take certain number of debits", "Switch to further notice", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Take certain number of debits", "Switch to further notice", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -498,7 +500,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractIfEndOnExactDateTerminationDateMustBePassedException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "End on exact date", "Switch to further notice", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "End on exact date", "Switch to further notice", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         [TestMethod]
@@ -506,7 +508,7 @@ namespace EazySDK_UnitTests
         public void TestPostWeeklyContractIfEndOnExactDateTerminationDateMustBeLaterThanStartDateException()
         {
             var Post = new Post(Settings);
-            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "End on exact date", "Switch to further notice", TerminationDate: "1990-01-01", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
+            var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "End on exact date", "Switch to further notice", TerminationDate: "1990-01-01", PaymentAmount: "10.00", Frequency: "1", PaymentDayInWeek: "Monday", AdditionalReference: "A Reference");
         }
 
         ///<summary>It is a known issue that non-adhoc weekly contracts are not functioning correctly.</summary>
@@ -514,7 +516,7 @@ namespace EazySDK_UnitTests
         //public void TestPostWeeklyContractTakeCertainNumberOfDebits()
         //{
         //    var Post = new Post(Settings);
-        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", NumberofDebits: "10");
+        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", NumberofDebits: "10");
 
         //    Assert.IsTrue(Req.Contains("DirectDebitRef"));
         //}
@@ -523,7 +525,7 @@ namespace EazySDK_UnitTests
         //public void TestPostWeeklyContractEndOnExactDate()
         //{
         //    var Post = new Post(Settings);
-        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "End on exact date", "Expire", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", TerminationDate: "2020-01-01");
+        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "End on exact date", "Expire", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", TerminationDate: "2020-01-01");
 
         //    Assert.IsTrue(Req.Contains("DirectDebitRef"));
         //}
@@ -542,7 +544,7 @@ namespace EazySDK_UnitTests
         //public void TestPostWeeklyContractExtraInitialAmount()
         //{
         //    var Post = new Post(Settings);
-        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", ExtraInitialAmount: "10.00");
+        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", ExtraInitialAmount: "10.00");
 
         //    Assert.IsTrue(Req.Contains("DirectDebitRef"));
         //}
@@ -551,7 +553,7 @@ namespace EazySDK_UnitTests
         //public void TestPostWeeklyContractFinalAmount()
         //{
         //    var Post = new Post(Settings);
-        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", FinalAmount: "10.00");
+        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "Monday", FinalAmount: "10.00");
 
         //    Assert.IsTrue(Req.Contains("DirectDebitRef"));
         //}
@@ -560,7 +562,7 @@ namespace EazySDK_UnitTests
         //public void TestPostWeeklyContractAdditionalReference()
         //{
         //    var Post = new Post(Settings);
-        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", "2019-07-15", false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "1", AdditionalReference: "A Reference");
+        //    var Req = Post.Contract("310a826b-d095-48e7-a55a-19dba82c566f", "weekly_free", startDate, false, "Until further notice", "Switch to further notice", Frequency: "1", PaymentAmount: "10.00", PaymentDayInWeek: "1", AdditionalReference: "A Reference");
         //    Assert.IsTrue(Req.Contains("DirectDebitRef"));
         //}
     }

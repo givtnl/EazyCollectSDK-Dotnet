@@ -21,7 +21,7 @@ namespace EazySDK_UnitTests
         public void TestOneWorkingDayInTheFuture()
         {
             DateTime x = WorkingDays.CheckWorkingDaysInFuture(1);
-            DateTime y = new DateTime(2019, 06, 27);
+            DateTime y = new DateTime(2020, 07, 22);
             Assert.IsTrue(x == y);
         }
 
@@ -29,15 +29,15 @@ namespace EazySDK_UnitTests
         public void TestNextMondayInTheFuture()
         {
             DateTime x = WorkingDays.CheckWorkingDaysInFuture(3);
-            DateTime y = new DateTime(2019, 07, 01);
+            DateTime y = new DateTime(2020, 07, 24);
             Assert.IsTrue(x == y);
         }
 
         [TestMethod]
         public void TestDayAfterNextBankHolidayInTheFuture()
         {
-            DateTime x = WorkingDays.CheckWorkingDaysInFuture(43);
-            DateTime y = new DateTime(2019, 08, 27);
+            DateTime x = WorkingDays.CheckWorkingDaysInFuture(29);
+            DateTime y = new DateTime(2020, 09, 01);
             Assert.IsTrue(x == y);
         }
 

@@ -23,24 +23,24 @@ namespace EazySDK_UnitTests
         public void TestValidPaymentDate()
         {
             Settings.GetSection("directDebitProcessingDays")["OngoingProcessingDays"] = "5";
-            string PaymentAmount = PaymentCheck.CheckPaymentDate("2019-07-15", Settings);
-            Assert.IsTrue(PaymentAmount == "2019-07-15");
+            string PaymentAmount = PaymentCheck.CheckPaymentDate("2020-08-15", Settings);
+            Assert.IsTrue(PaymentAmount == "2020-08-15");
         }
 
         [TestMethod]
         public void TestValidPaymentDateAfterBankHoliday()
         {
-            Settings.GetSection("directDebitProcessingDays")["OngoingProcessingDays"] = "43";
-            string PaymentAmount = PaymentCheck.CheckPaymentDate("2019-08-27", Settings);
-            Assert.IsTrue(PaymentAmount == "2019-08-27");
+            Settings.GetSection("directDebitProcessingDays")["OngoingProcessingDays"] = "29";
+            string PaymentAmount = PaymentCheck.CheckPaymentDate("2020-09-01", Settings);
+            Assert.IsTrue(PaymentAmount == "2020-09-01");
         }
 
         [TestMethod]
         public void TestPaymentDateAcceptsNonISODates()
         {
             Settings.GetSection("directDebitProcessingDays")["OngoingProcessingDays"] = "5";
-            string PaymentAmount = PaymentCheck.CheckPaymentDate("15/07/2019", Settings);
-            Assert.IsTrue(PaymentAmount == "2019-07-15");
+            string PaymentAmount = PaymentCheck.CheckPaymentDate("15/08/2020", Settings);
+            Assert.IsTrue(PaymentAmount == "2020-08-15");
         }
 
         [TestMethod]

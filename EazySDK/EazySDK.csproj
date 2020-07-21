@@ -12,7 +12,8 @@ Eazy Collect API built in .NET Standard 2.0. Its core purpose is to provide a fr
     <RepositoryUrl>https://github.com/EazyCollectServices/EazyCollectSDK-Dotnet</RepositoryUrl>
     <PackageTags>Fintech Finance  EazyCollect Direct Debit Payment Processing</PackageTags>
     <PackageIconUrl>https://www.eazycollect.co.uk/images/eazycollectdirectdebits.png</PackageIconUrl>
-    <PackageId>TestEazySDK</PackageId>
+    <PackageId>EazySDK</PackageId>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
