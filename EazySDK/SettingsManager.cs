@@ -84,7 +84,7 @@ namespace EazySDK
                 { "payments:AutoFixPaymentDate","false" },
                 { "payments:IsCreditAllowed","false" },
 
-                { "warnings:CustomerSearchWarning","false" },
+                { "warnings:CustomerSearchWarning","true" },
 
 
                 { "other:BankHolidayUpdateDays","30" },
