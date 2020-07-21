@@ -80,7 +80,7 @@ namespace EazySDK
             {
                 new Models.Warnings
                 {
-                    CustomerSearchWarning = false
+                    CustomerSearchWarning = true
                 }
             };
 
