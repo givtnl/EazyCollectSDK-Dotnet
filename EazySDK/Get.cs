@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
@@ -32,20 +33,29 @@ namespace EazySDK
         }
 
         /// <summary>
-        /// Get the current callback URL from EazyCustomerManager
+        /// Get the current callback URL for the given entity from EazyCustomerManager
         /// </summary>
         /// 
+        /// <param name="entity">The entity for which to receive BACS messages. Valid choices: "contract", "customer", "payment"</param>
+        /// 
         /// <example>
-        /// CallbackUrl();
+        /// CallbackUrl("contract");
         /// </example>
         /// 
         /// <returns>
         /// "The callback URL is example.com" 
         /// </returns>
-        public string CallbackUrl()
+        public string CallbackUrl(string entity)
         {
+            string[] validEntities = { "contract", "customer", "payment" };
+            
+            if (!validEntities.Any(entity.ToLower().Contains))
+            {
+                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
+            }
+
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Get("BACS/callback");
+            var SendRequest = CreateRequest.Get($"BACS/{entity}/callback");
 
             // Null will be returned if a callback URL currently does not exist
             if (SendRequest == "{\"Message\":null)")

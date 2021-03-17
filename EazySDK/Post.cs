@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
@@ -37,15 +38,25 @@ namespace EazySDK
         /// NOTE: We strongly recommend using a HTTPS secured URL as the return endpoint.
         /// </remarks>
         /// 
+        /// <param name="entity">The entity for which to receive BACS messages. Valid choices: "contract", "customer", "payment"</param>
+        /// <param name="_CallbackUrl">The new URL to set</param>
+        /// 
         /// <example>
-        /// CallbackUrl("https://test.com");
+        /// CallbackUrl("contract", "https://test.com");
         /// </example>
         /// 
         /// <returns>
         /// "The new callback URL is https://test.com" 
         /// </returns>
-        public string CallbackUrl(string _CallbackUrl)
+        public string CallbackUrl(string entity, string _CallbackUrl)
         {
+            string[] validEntities = { "contract", "customer", "payment" };
+
+            if (!validEntities.Any(entity.ToLower().Contains))
+            {
+                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
+            }
+
             // Create a new dictionary of parameters
             Parameters = new Dictionary<string, string>
             {
@@ -53,7 +64,7 @@ namespace EazySDK
             };
 
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Post("BACS/callback", _Parameters: Parameters);
+            var SendRequest = CreateRequest.Post($"BACS/{entity}/callback", _Parameters: Parameters);
 
             // Pass the return string to the handler. This will throw an exception if it is not what we expect
             Handler.GenericExceptionCheck(SendRequest);

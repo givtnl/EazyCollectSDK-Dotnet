@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace EazySDK
@@ -36,10 +37,17 @@ namespace EazySDK
         /// <returns>
         /// Confirmation string
         /// </returns>
-        public string CallbackUrl()
+        public string CallbackUrl(string entity)
         {
+            string[] validEntities = { "contract", "customer", "payment" };
+
+            if (!validEntities.Any(entity.ToLower().Contains))
+            {
+                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
+            }
+
             var CreateRequest = Handler.Session(Settings);
-            var SendRequest = CreateRequest.Delete("BACS/callback");
+            var SendRequest = CreateRequest.Delete($"BACS/{entity}/callback");
 
             // Pass the return string to the handler. This will throw an exception if it is not what we expect
             Handler.GenericExceptionCheck(SendRequest);
