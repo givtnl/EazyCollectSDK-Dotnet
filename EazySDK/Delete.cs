@@ -41,7 +41,7 @@ namespace EazySDK
         {
             string[] validEntities = { "contract", "customer", "payment" };
 
-            if (!validEntities.Any(entity.ToLower().Contains))
+            if (!validEntities.Contains(entity.ToLower()))
             {
                 throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
             }
