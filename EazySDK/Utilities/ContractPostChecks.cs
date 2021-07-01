@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
@@ -34,7 +35,7 @@ namespace EazySDK.Utilities
                 ScheduleNamesList.Add(property.Name.ToLower());
             }
 
-            if (ScheduleNamesList.Contains(ScheduleName))
+            if (ScheduleNamesList.Contains(ScheduleName, StringComparer.OrdinalIgnoreCase))
             {
                 return true;
             }
