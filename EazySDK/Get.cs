@@ -160,6 +160,41 @@ namespace EazySDK
         }
 
         /// <summary>
+        /// Gets a single customer object by ID
+        /// </summary>
+        /// 
+        /// <param name="CustomerId">The GUID of the customer to find</param>
+        /// 
+        /// <example>
+        /// CustomersSingle("d9994c4c-87df-4c25-b5b9-9076fc4a1111")
+        /// </example>
+        /// 
+        /// <returns>
+        /// JSON object detailing the customer
+        /// </returns>
+        public string CustomersSingle(string CustomerId)
+        {
+            var CreateRequest = Handler.Session(Settings);
+            var SendRequest = CreateRequest.Get(string.Format("customer/{0}", CustomerId));
+
+            // If customer doesn't exist
+            if (SendRequest.Contains("\"error\":\"The requested resource is not found\""))
+            {
+                return string.Format("Customer with ID {0} not found for this account.", CustomerId);
+            }
+            else
+            {
+                // Pass the return string to the handler. This will throw an exception if it is now what we expect
+                Handler.GenericExceptionCheck(SendRequest);
+                // Get the JSON returned from EazyCustomerManager
+                JObject SendRequestAsJson = JObject.Parse(SendRequest);
+                // Get the Customer JSON object
+                return SendRequestAsJson.ToString();
+            }
+
+        }
+
+        /// <summary>
         /// Return all contracts belonging to a provided customer
         /// </summary>
         /// 
