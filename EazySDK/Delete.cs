@@ -30,8 +30,10 @@ namespace EazySDK
         /// Delete the currently selected callback URL for EazyCustomerManager
         /// </summary>
         /// 
+        /// <param name="entity">The entity for which to receive BACS messages. Valid choices: "contract", "customer", "payment", "schedule"</param>
+        /// 
         /// <example>
-        /// CallbackUrl();
+        /// CallbackUrl("contract");
         /// </example>
         /// 
         /// <returns>
@@ -39,11 +41,11 @@ namespace EazySDK
         /// </returns>
         public string CallbackUrl(string entity)
         {
-            string[] validEntities = { "contract", "customer", "payment" };
+            string[] validEntities = { "contract", "customer", "payment", "schedule" };
 
             if (!validEntities.Contains(entity.ToLower()))
             {
-                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
+                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer', 'payment' or 'schedule'.");
             }
 
             var CreateRequest = Handler.Session(Settings);

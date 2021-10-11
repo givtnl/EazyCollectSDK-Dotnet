@@ -38,7 +38,7 @@ namespace EazySDK
         /// NOTE: We strongly recommend using a HTTPS secured URL as the return endpoint.
         /// </remarks>
         /// 
-        /// <param name="entity">The entity for which to receive BACS messages. Valid choices: "contract", "customer", "payment"</param>
+        /// <param name="entity">The entity for which to receive BACS messages. Valid choices: "contract", "customer", "payment", "schedule"</param>
         /// <param name="_CallbackUrl">The new URL to set</param>
         /// 
         /// <example>
@@ -50,11 +50,11 @@ namespace EazySDK
         /// </returns>
         public string CallbackUrl(string entity, string _CallbackUrl)
         {
-            string[] validEntities = { "contract", "customer", "payment" };
+            string[] validEntities = { "contract", "customer", "payment", "schedule" };
 
             if (!validEntities.Contains(entity.ToLower()))
             {
-                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer' or 'payment'.");
+                throw new Exceptions.InvalidParameterException($"{entity} is not a valid entity; must be one of either 'contract', 'customer', 'payment' or 'schedule'.");
             }
 
             // Create a new dictionary of parameters
