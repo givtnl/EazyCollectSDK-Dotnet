@@ -374,7 +374,7 @@ namespace EazySDK.Utilities
 
             try
             {
-                JToken ScheduleToken = SchedulesList.SelectToken("Schedules." + ScheduleName);
+                JToken ScheduleToken = SchedulesList.SelectToken($"Schedules[\'{ScheduleName}\']");
                 Frequency = ScheduleToken.Value<string>("ScheduleFrequency");
             }
             catch (Newtonsoft.Json.JsonException)

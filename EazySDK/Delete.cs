@@ -100,7 +100,7 @@ namespace EazySDK
             }
             catch (ArgumentException)
             {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@accesspaysuite.com");
             }
 
             var CreateRequest = Handler.Session(Settings);

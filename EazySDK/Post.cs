@@ -144,7 +144,7 @@ namespace EazySDK
             }
             catch (ArgumentException)
             {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@accesspaysuite.com");
             }
 
             if (Line2 != "") { Parameters.Add("line2", Line2); }
@@ -401,7 +401,7 @@ namespace EazySDK
             }
             catch (ArgumentException)
             {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@accesspaysuite.com");
             }
 
             if (NumberofDebits != "") { Parameters.Add("numberOfDebits", NumberofDebits); }
@@ -584,7 +584,7 @@ namespace EazySDK
             }
             catch (ArgumentException)
             {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@accesspaysuite.com");
             }
 
             if (PaymentAmount != "") { Parameters.Add("amount", PaymentAmount); }
@@ -648,7 +648,7 @@ namespace EazySDK
             }
             catch (ArgumentException)
             {
-                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@eazycollect.co.uk");
+                throw new Exceptions.InvalidParameterException("There was an error adding one or more parameters to the call. Please try again, or contact help@accesspaysuite.com");
             }
 
             if (!IsCreditAllowed)

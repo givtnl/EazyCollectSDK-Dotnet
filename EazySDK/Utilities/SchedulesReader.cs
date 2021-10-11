@@ -23,27 +23,9 @@ namespace EazySDK.Utilities
         public JObject ReadSchedulesFile(IConfiguration Settings)
         {
             Environment = Settings.GetSection("currentEnvironment")["Environment"].ToLower();
-
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"\Includes\" + Environment + "scheduleslist.json")))
-            {
-                Writer = new SchedulesWriter();
-                SchedulesJson = Writer.ScheduleWriter(Settings);
-                return SchedulesJson;
-            }
-            else
-            {
-                try
-                {
-                    SchedulesJson = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + @"\Includes\" + Environment + "scheduleslist.json"));
-                    return SchedulesJson;
-                }
-                catch
-                {
-                    Writer = new SchedulesWriter();
-                    SchedulesJson = Writer.ScheduleWriter(Settings);
-                    return SchedulesJson;
-                }
-            }
+            Writer = new SchedulesWriter();
+            SchedulesJson = Writer.ScheduleWriter(Settings);
+            return SchedulesJson;
         }
     }
 }

@@ -33,4 +33,4 @@ configuration can be seen below.
 All functions in EazySDK possess their own documentation, and can be viewed by viewing the `<summary>` associated with the selected function. The documentation can also be [found on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-DotNet/tree/master/EazySDK/docs), or in the /docs directory of the package.
 
 ## Issues
-If you find any issues with EazySDK, please [raise an issue on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-DotNet/issues/new) detailing the issue. If this is not possible, alternatively email help@eazycollect.co.uk with as much information as you are able to provide.
+If you find any issues with EazySDK, please [raise an issue on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-DotNet/issues/new) detailing the issue. If this is not possible, alternatively email help@accesspaysuite.com with as much information as you are able to provide.
