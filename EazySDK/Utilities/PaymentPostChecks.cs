@@ -56,7 +56,7 @@ namespace EazySDK.Utilities
             }
 
             CheckWorkingDays WorkingDays = new CheckWorkingDays();
-            DateTime FirstAvailableDate = WorkingDays.CheckWorkingDaysInFuture(OngoingProcessingDays);
+            DateTime FirstAvailableDate = WorkingDays.CheckWorkingDaysInFuture(OngoingProcessingDays, Settings);
 
             if (InitialDate < FirstAvailableDate)
             {

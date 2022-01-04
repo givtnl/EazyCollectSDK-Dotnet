@@ -1,0 +1,35 @@
+﻿{
+  "currentEnvironment": {
+    "Environment": "sandbox"
+  },
+  "sandboxClientDetails": {
+    "ClientCode": "",
+    "ApiKey": ""
+  },
+  "ecm3ClientDetails": {
+    "ClientCode": "",
+    "ApiKey": ""
+  },
+  "directDebitProcessingDays": {
+    "InitialProcessingDays": 10,
+    "OngoingProcessingDays": 5
+  },
+  "contracts": {
+    "AutoFixStartDate": false,
+    "AutoFixTerminationTypeAdHoc": false,
+    "AutoFixAtTheEndAdHoc": false,
+    "AutoFixPaymentDayInMonth": false,
+    "AutoFixPaymentMonthInYear": false
+  },
+  "payments": {
+    "AutoFixPaymentDate": false,
+    "IsCreditAllowed": false
+  },
+  "warnings": {
+    "CustomerSearchWarning": true
+  },
+  "other": {
+    "BankHolidayUpdateDays": 30,
+    "ForceUpdateSchedulesOnRun": false
+  }
+}

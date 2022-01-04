@@ -16,6 +16,11 @@ namespace EazySDK.Utilities
         private static IEnumerable<string> FileLines { get; set; }
         private static DateTime LastUpdateDate { get; set; }
 
+        public WorkingDaysReader(IConfiguration settings)
+        {
+            Settings = settings;
+        }
+
 
         /// <summary>
         /// Read the working days file and return a List object with the working days data. If the file needs updating, send the updating or it doesn't exist, write the file..
@@ -25,7 +30,6 @@ namespace EazySDK.Utilities
         public List<string> ReadWorkingDaysFile()
         {
             Handler = new ClientHandler();
-            Settings = Handler.Settings();
             UpdateDays = int.Parse(Settings.GetSection("other")["BankHolidayUpdateDays"]);
 
             if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json")))

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 
 namespace EazySDK.Utilities
@@ -15,14 +16,14 @@ namespace EazySDK.Utilities
         private DateTime FinalDate { get; set; }
         private bool StartToday { get; set; }
 
-        public DateTime CheckWorkingDaysInFuture(int NumberOfDays)
+        public DateTime CheckWorkingDaysInFuture(int NumberOfDays, IConfiguration Settings)
         {
             if (NumberOfDays <= 0)
             {
                 throw new Exceptions.InvalidSettingsConfigurationException("The number of days in the future must be above 0.");
             }
 
-            Reader = new WorkingDaysReader();
+            Reader = new WorkingDaysReader(Settings);
             BankHolidaysList = Reader.ReadWorkingDaysFile();
 
             WorkingDays = 0;
@@ -33,11 +34,12 @@ namespace EazySDK.Utilities
             // Check if today is a bank holiday or falls on a weekend
             if (DateToday.DayOfWeek == DayOfWeek.Saturday || DateToday.DayOfWeek == DayOfWeek.Sunday || BankHolidaysList.Contains(DateStart.Date.ToString("yyyy-MM-dd")))
             {
+                var CheckDate = DateToday;
                 int i = 0;
-                while (DateToday.DayOfWeek != DayOfWeek.Saturday && DateToday.DayOfWeek != DayOfWeek.Sunday || BankHolidaysList.Contains(DateStart.ToString("yyyy-MM-dd")))
+                while (CheckDate.DayOfWeek != DayOfWeek.Saturday && CheckDate.DayOfWeek != DayOfWeek.Sunday || BankHolidaysList.Contains(CheckDate.ToString("yyyy-MM-dd")))
                 {
                     i++;
-                    DateStart = DateToday.AddDays(i);
+                    CheckDate = CheckDate.AddDays(i);
                 }
             }
 

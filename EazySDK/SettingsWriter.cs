@@ -17,7 +17,7 @@ namespace EazySDK
         private static JObject _warnings { get; set; }
         private static JObject _other { get; set; }
 
-        public SettingsWriter()
+        public SettingsWriter(string settingsFile)
         {
             List<Models.CurrentEnvironment> currentEnvironment = new List<Models.CurrentEnvironment>
             {
@@ -138,7 +138,7 @@ namespace EazySDK
             RootObject.Add("other", _other);
 
 
-            File.WriteAllText(Directory.GetCurrentDirectory() + "/appSettings.json", RootObject.ToString());
+            File.WriteAllText(Directory.GetCurrentDirectory() + "/" + settingsFile, RootObject.ToString());
         }
 
     }

@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EazySDK", "EazySDK\EazySDK.csproj", "{2BB56B88-5CE3-4808-A9C6-91EBAAB525F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EazySDK-UnitTests", "EazySDK-UnitTests\EazySDK-UnitTests.csproj", "{1BBFC6AF-3FEE-4986-A709-FAFC83D5DF46}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{1F50E181-B3D4-434F-B48A-B9EAFB98CC9C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44491CF6-48C8-4658-AE16-BD9036922B67}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,10 +26,6 @@ Global
 		{1BBFC6AF-3FEE-4986-A709-FAFC83D5DF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BBFC6AF-3FEE-4986-A709-FAFC83D5DF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BBFC6AF-3FEE-4986-A709-FAFC83D5DF46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F50E181-B3D4-434F-B48A-B9EAFB98CC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F50E181-B3D4-434F-B48A-B9EAFB98CC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F50E181-B3D4-434F-B48A-B9EAFB98CC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F50E181-B3D4-434F-B48A-B9EAFB98CC9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
