@@ -305,7 +305,7 @@ namespace EazySDK
         /// 
         /// <remarks>
         /// NOTE: You should not need to run this command manually.The SDK will automatically get a list of available schedules when first ran, 
-        /// and place them in the includes folder, named sandbox.csv and ecm3.csv respectively.
+        /// and place them in the includes folder, named playpen.csv and ecm3.csv respectively.
         /// </remarks>
         /// 
         /// <returns>

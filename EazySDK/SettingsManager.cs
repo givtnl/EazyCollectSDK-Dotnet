@@ -68,8 +68,8 @@ namespace EazySDK
             {
                 { "currentEnvironment:Environment","ecm3" },
 
-                { "sandboxClientDetails:ApiKey","" },
-                { "sandboxClientDetails:ClientCode","" },
+                { "playpenClientDetails:ApiKey","" },
+                { "playpenClientDetails:ClientCode","" },
 
                 { "ecm3ClientDetails:ApiKey","" },
                 { "ecm3ClientDetails:ClientCode","" },

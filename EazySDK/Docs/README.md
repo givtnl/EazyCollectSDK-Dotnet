@@ -5,7 +5,7 @@
 - [Configuration](#configuration)
   -  [Available settings](#available-settings)
       - [currentEnvironment](#currentenvironmentenvironment)
-      - [sandboxClientDetails](#sandboxclientdetails)
+      - [playpenClientDetails](#playpenclientdetails)
       - [ecm3ClientDetails](#ecm3clientdetails)
       - [directDebitProcessingDays](#directdebitprocessingdays)
       - [contracts](#contracts)
@@ -58,31 +58,31 @@ Configuring EazySDK is simple, and can be done in two ways. The settings file, `
 
 #### currentEnvironment[Environment]
 
-Defines the current working environment of EazySDK. As many of our clients own a sandbox test account, the ability to switch between the live and sandbox environment at ease is crucial.
+Defines the current working environment of EazySDK. As many of our clients own a playpen test account, the ability to switch between the live and playpen environments at ease is crucial.
 
 ##### Acceptable arguments
 
-*sandbox*
+*playpen*
 
-The sandbox test environment. All data submitted to this environment will not be processed by BACS, and no collections will be taken from customers.
+The playpen test environment. All data submitted to this environment will not be processed by BACS, and no collections will be taken from customers.
 
 *ecm3*
 
 The live working environment. All data submitted to this environment will be processed by BACS, sending test information to the live environment may result in a client being charged.
 
-#### sandboxClientDetails
+#### playpenClientDetails
 
-The API authorisation details for the sandbox test environment.
+The API authorisation details for the playpen test environment.
 
 ##### Acceptable arguments
 
 *ClientCode*
 
-The sandbox environment client code used when making API calls to Eazy Customer Manager.
+The playpen environment client code used when making API calls to Eazy Customer Manager.
 
 *ApiKey*
 
-The sandbox environment API key used when making API calls to Eazy Customer Manager.
+The playpen environment API key used when making API calls to Eazy Customer Manager.
 
 
 #### ecm3ClientDetails
@@ -293,7 +293,7 @@ string - Payment JObject
 
 #### Schedules
 
-Search EazyCustomerManager for all available schedules. **Note:** These can be found without making this call, by  viewing either `sandboxscheduleslist.json` or `ecm3scheduleslist.json` in the `./Includes` directory.
+Search EazyCustomerManager for all available schedules. **Note:** These can be found without making this call, by  viewing either `playpenscheduleslist.json` or `ecm3scheduleslist.json` in the `./Includes` directory.
 
 *Example*
 
@@ -608,7 +608,7 @@ All exceptions thrown by EazySDK derrive from the EazySDKException base exceptio
 `ParameterNotAllowedError` is thrown when a parameter not allowed for the call has been passed.
 
 #### InvalidEnvironmentError
-`InvalidEnvironmentError` is thrown when the environment set in `settings.current_environment` is not set to `sandbox` or `ecm3`.
+`InvalidEnvironmentError` is thrown when the environment set in `settings.current_environment` is not set to `playpen` or `ecm3`.
 
 #### InvalidStartDateError
 `InvalidStartDateError` is thrown when the start date is not valid. This could mean the start date is too soon, or it is malformed.

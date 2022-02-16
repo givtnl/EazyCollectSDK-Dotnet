@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Billy Glasbey</Authors>
-    <Company>Eazy Collect</Company>
+    <Authors>Access PaySuite</Authors>
+    <Company>Access PaySuite</Company>
     <Product>Eazy Customer Manager 3</Product>
     <Description>EazySDK is an integration of the 
 Eazy Collect API built in .NET Standard 2.0. Its core purpose is to provide a framework for developers already working with Eazy Collect to integrate Eazy Customer Manager into their platform. The framework provides functions designed to speed up the integration process between a developers Customer Relationship Manager and Eazy Collect.</Description>
@@ -11,9 +11,9 @@ Eazy Collect API built in .NET Standard 2.0. Its core purpose is to provide a fr
     <PackageProjectUrl>https://github.com/EazyCollectServices/EazyCollectSDK-Dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EazyCollectServices/EazyCollectSDK-Dotnet</RepositoryUrl>
     <PackageTags>Fintech Finance  EazyCollect Direct Debit Payment Processing</PackageTags>
-    <PackageIconUrl>https://www.eazycollect.co.uk/images/eazycollectdirectdebits.png</PackageIconUrl>
+    <PackageIconUrl>https://ecm3.eazycollect.co.uk/Content/faviconWorkspace.ico</PackageIconUrl>
     <PackageId>EazySDK</PackageId>
-    <Version>1.3.3</Version>
+    <Version>1.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

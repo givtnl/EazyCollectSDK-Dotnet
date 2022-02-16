@@ -21,9 +21,9 @@ configuration can be seen below.
     EazySDK.ClientHandler Handler = new ClientHandler();
     IConfiguration Settings = Handler.Settings();
     
-    Settings.GetSection("currentEnvironment")["Environment"] = "sandbox"; 
-    Settings.GetSection('sandboxClientDetails')["ApiKey"] = "{api_key}";
-    Settings.GetSection('sandboxClientDetails')["ClientCode"] = "{client_code}";
+    Settings.GetSection("currentEnvironment")["Environment"] = "playpen"; 
+    Settings.GetSection('playpenClientDetails')["ApiKey"] = "{api_key}";
+    Settings.GetSection('playpenClientDetails')["ClientCode"] = "{client_code}";
     
     EazySDK.Get EazyGet = new EazySDK.Get(Settings);
     string Response = EazyGet.Customers();

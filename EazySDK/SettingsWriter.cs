@@ -9,7 +9,7 @@ namespace EazySDK
         private static string JsonArray { get; set; }
         private static JObject RootObject { get; set; }
         private static JObject _currentEnvironment { get; set; }
-        private static JObject _sandboxClientDetails { get; set; }
+        private static JObject _playpenClientDetails { get; set; }
         private static JObject _ecm3ClientDetails { get; set; }
         private static JObject _directDebitProcessingDays { get; set; }
         private static JObject _contracts { get; set; }
@@ -23,13 +23,13 @@ namespace EazySDK
             {
                 new Models.CurrentEnvironment
                 {
-                    Environment = "sandbox",
+                    Environment = "playpen",
                 }
             };
 
-            List<Models.SandboxClientDetails> sandboxClientDetails = new List<Models.SandboxClientDetails>
+            List<Models.PlaypenClientDetails> playpenClientDetails = new List<Models.PlaypenClientDetails>
             {
-                new Models.SandboxClientDetails
+                new Models.PlaypenClientDetails
                 {
                     ApiKey = "",
                     ClientCode = ""
@@ -95,7 +95,7 @@ namespace EazySDK
 
             RootObject = new JObject();
             _currentEnvironment = new JObject();
-            _sandboxClientDetails = new JObject();
+            _playpenClientDetails = new JObject();
             _ecm3ClientDetails = new JObject();
             _directDebitProcessingDays = new JObject();
             _contracts = new JObject();
@@ -105,8 +105,8 @@ namespace EazySDK
 
             _currentEnvironment.Add(new JProperty(nameof(Models.CurrentEnvironment.Environment), currentEnvironment[0].Environment.ToString()));
 
-            _sandboxClientDetails.Add(new JProperty(nameof(Models.SandboxClientDetails.ApiKey), sandboxClientDetails[0].ApiKey.ToString()));
-            _sandboxClientDetails.Add(new JProperty(nameof(Models.SandboxClientDetails.ClientCode), sandboxClientDetails[0].ClientCode.ToString()));
+            _playpenClientDetails.Add(new JProperty(nameof(Models.PlaypenClientDetails.ApiKey), playpenClientDetails[0].ApiKey.ToString()));
+            _playpenClientDetails.Add(new JProperty(nameof(Models.PlaypenClientDetails.ClientCode), playpenClientDetails[0].ClientCode.ToString()));
 
             _ecm3ClientDetails.Add(new JProperty(nameof(Models.Ecm3ClientDetails.ApiKey), ecm3ClientDetails[0].ApiKey.ToString()));
             _ecm3ClientDetails.Add(new JProperty(nameof(Models.Ecm3ClientDetails.ClientCode), ecm3ClientDetails[0].ClientCode.ToString()));
@@ -129,7 +129,7 @@ namespace EazySDK
             _other.Add(new JProperty(nameof(Models.Other.ForceUpdateSchedulesOnRun), other[0].ForceUpdateSchedulesOnRun.ToString()));
 
             RootObject.Add("currentEnvironment", _currentEnvironment);
-            RootObject.Add("sandboxClientDetails", _sandboxClientDetails);
+            RootObject.Add("playpenClientDetails", _playpenClientDetails);
             RootObject.Add("ecm3ClientDetails", _ecm3ClientDetails);
             RootObject.Add("directDebitProcessingDays", _directDebitProcessingDays);
             RootObject.Add("contracts", _contracts);

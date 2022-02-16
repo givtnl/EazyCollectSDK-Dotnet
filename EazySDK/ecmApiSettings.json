@@ -1,8 +1,8 @@
 ﻿{
   "currentEnvironment": {
-    "Environment": "sandbox"
+    "Environment": "playpen"
   },
-  "sandboxClientDetails": {
+  "playpenClientDetails": {
     "ClientCode": "",
     "ApiKey": ""
   },

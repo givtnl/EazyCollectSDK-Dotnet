@@ -80,7 +80,7 @@ namespace EazySDK
             }
             
             // Ensure the Environment is valid
-            HashSet<string> AcceptableEnvironments = new HashSet<string> { "sandbox", "ecm3" };
+            HashSet<string> AcceptableEnvironments = new HashSet<string> { "playpen", "ecm3" };
             if (!AcceptableEnvironments.Contains(Environment.ToLower()))
             {
                 throw new Exception(string.Format("{0} is not an acceptable environment.", Environment));
@@ -96,8 +96,8 @@ namespace EazySDK
             }
             else
             {
-                ApiKey = Settings.GetSection("sandboxClientDetails")["ApiKey"];
-                ClientCode = Settings.GetSection("sandboxClientDetails")["ClientCode"];
+                ApiKey = Settings.GetSection("playpenClientDetails")["ApiKey"];
+                ClientCode = Settings.GetSection("playpenClientDetails")["ClientCode"];
             }
             }
 
