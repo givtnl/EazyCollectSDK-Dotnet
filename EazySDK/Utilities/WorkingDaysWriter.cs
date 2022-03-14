@@ -55,7 +55,6 @@ namespace EazySDK.Utilities
             }
             // We will use the first line as a time check when attempting to read the file
             DatesList.Insert(0, DateTime.Today.Date.ToString("yyyy-MM-dd"));
-            File.WriteAllText(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json", string.Join("\n", DatesList.ToArray()));
             return DatesList;
         }
     }

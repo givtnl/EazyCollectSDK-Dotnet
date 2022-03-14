@@ -31,18 +31,6 @@ namespace EazySDK.Utilities
             DateToday = DateTime.UtcNow.Date;
             DateStart = DateToday;
 
-            // Check if today is a bank holiday or falls on a weekend
-            if (DateToday.DayOfWeek == DayOfWeek.Saturday || DateToday.DayOfWeek == DayOfWeek.Sunday || BankHolidaysList.Contains(DateStart.Date.ToString("yyyy-MM-dd")))
-            {
-                var CheckDate = DateToday;
-                int i = 0;
-                while (CheckDate.DayOfWeek != DayOfWeek.Saturday && CheckDate.DayOfWeek != DayOfWeek.Sunday || BankHolidaysList.Contains(CheckDate.ToString("yyyy-MM-dd")))
-                {
-                    i++;
-                    CheckDate = CheckDate.AddDays(i);
-                }
-            }
-
             while (WorkingDays <= (NumberOfDays-1))
             {
                 WorkingDate = DateStart.AddDays(CalendarDays);

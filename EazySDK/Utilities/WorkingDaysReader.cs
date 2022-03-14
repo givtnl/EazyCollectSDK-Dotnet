@@ -30,36 +30,10 @@ namespace EazySDK.Utilities
         public List<string> ReadWorkingDaysFile()
         {
             Handler = new ClientHandler();
-            UpdateDays = int.Parse(Settings.GetSection("other")["BankHolidayUpdateDays"]);
 
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Includes") || (!File.Exists(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json")))
-            {
-                WorkingDaysWriter writer = new WorkingDaysWriter();
-                WorkingDaysList = writer.WorkingDayWriter();
-                return WorkingDaysList;
-            }
-            else
-            {
-                WorkingDaysList = new List<string>();
-                FileLines = File.ReadLines(Directory.GetCurrentDirectory() + @"\Includes\bankholidays.json");
-
-                LastUpdateDate = DateTime.Parse(FileLines.First());
-
-                if ((DateTime.UtcNow.Date - LastUpdateDate).TotalDays >= UpdateDays) {
-                    WorkingDaysWriter writer = new WorkingDaysWriter();
-                    WorkingDaysList = writer.WorkingDayWriter();
-                    return WorkingDaysList;
-                }
-                else
-                {
-                    foreach (string Line in FileLines)
-                    {
-                        WorkingDaysList.Add(Line);
-                    }
-                    WorkingDaysList.RemoveAt(0);
-                    return WorkingDaysList;
-                }
-            }
+            WorkingDaysWriter writer = new WorkingDaysWriter();
+            WorkingDaysList = writer.WorkingDayWriter();
+            return WorkingDaysList;
         }
     }
 }
