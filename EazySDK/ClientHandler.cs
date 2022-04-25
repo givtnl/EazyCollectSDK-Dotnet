@@ -6,8 +6,13 @@ namespace EazySDK
     {
         public IConfiguration Settings()
         {
-            var GetSettings = SettingsManager.CreateSettings();
-            return GetSettings;
+            try 
+            {
+                return SettingsManager.CreateSettings();
+            } catch
+            {
+                return SettingsManager.CreateSettingsInMemory();
+            }
         }
 
         public Session Session(IConfiguration Settings)
