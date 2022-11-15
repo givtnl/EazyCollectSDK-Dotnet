@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 namespace EazySDK.Utilities
 {
@@ -20,7 +20,7 @@ namespace EazySDK.Utilities
         /// </returns>
         public bool CheckPostCodeIsCorectlyFormatted(string PostCode)
         {
-            Regex search = new Regex("^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$");
+            Regex search = new Regex("^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$");
             var result = search.IsMatch(PostCode);
 
             if (!result)
