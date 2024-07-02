@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <Authors>Access PaySuite</Authors>
     <Company>Access PaySuite</Company>
     <Product>Eazy Customer Manager 3</Product>
