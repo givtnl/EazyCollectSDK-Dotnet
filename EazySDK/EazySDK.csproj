@@ -16,7 +16,7 @@ Eazy Collect API built in .NET Standard 2.0. Its core purpose is to provide a fr
     <Version>1.4.0</Version>
   </PropertyGroup>
     <PropertyGroup>
-        <TargetFrameworks>net6.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
         <Authors>Access PaySuite</Authors>
         <Company>Access PaySuite</Company>
         <Product>Eazy Customer Manager 3</Product>
